@@ -22,6 +22,30 @@ body {
   justify-content: center;
 }
 
+.rotate {
+  transform: rotate(180deg);
+}
+
+.rotate-animate {
+  animation: rotate 0.5s linear forwards;
+}
+
+.reverse-rotate-animate {
+  animation: reverse 0.5s linear forwards;
+}
+
+@keyframes rotate {
+  100% {
+    transform: rotate(-180deg);
+  }
+}
+
+@keyframes reverse {
+  100% {
+    transform: rotate(0deg);
+  }
+}
+
 .inner-board {
   height: 95%;
   aspect-ratio: 1;
@@ -29,24 +53,41 @@ body {
   background-color: #553b10;
   display: flex;
   flex-direction: column;
+  position: relative;
+}
+
+.inner-board i {
+  position: absolute;
+}
+
+.inner-board .black {
+  color: #000;
+  text-shadow: 3px 3px #fff, -3px -3px #fff, -3px 3px #fff, 3px -3px #fff;
+  transform: rotateX(-30deg);
+}
+
+.inner-board .white {
+  color: #fff;
+  text-shadow: 3px 3px #000, -3px -3px #000, -3px 3px #000, 3px -3px #000;
+  transform: rotateX(-30deg);
 }
 
 .inner-board .pawn {
-  height: 60%;
+  font-size: 48px;
 }
 
 .inner-board .rook,
 .inner-board .knight,
 .inner-board .bishop {
-  height: 75%;
+  font-size: 50px;
 }
 
 .inner-board .queen {
-  height: 80%;
+  font-size: 52px;
 }
 
 .inner-board .king {
-  height: 85%;
+  font-size: 55px;
 }
 
 .inner-board .piece-white {
@@ -69,6 +110,9 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+  isolation: isolate;
+  color: white;
+  position: relative;
 }
 
 .squares:nth-child(odd) {
@@ -85,4 +129,30 @@ body {
 
 .squares:nth-child(even):hover {
   box-shadow: inset 0 0 10px 10px rgba(36, 18, 0, 0.6);
+}
+
+.hidden {
+  opacity: 0;
+}
+
+.valid:before {
+  content: '';
+  height: 100%;
+  position: absolute;
+  aspect-ratio: 1;
+  background: radial-gradient(#fff, teal);
+}
+
+.current:before {
+  content: '';
+  width: 100%;
+  aspect-ratio: 1;
+  background: radial-gradient(#000 60%, teal);
+}
+
+.danger:before {
+  content: '';
+  width: 100%;
+  aspect-ratio: 1;
+  background: radial-gradient(#f00 60%, #000);
 }
