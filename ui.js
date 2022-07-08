@@ -85,6 +85,13 @@ rows.map((row, index) => {
           `;
       });
       break;
+    // case 5:
+    //   squares.forEach((square) => {
+    //     square.innerHTML = `
+    //     <i class ="fas fa-chess-pawn black pawn rotate"></i>
+    //     `;
+    //   });
+    //   break;
     case 6:
       squares.forEach((square) => {
         square.innerHTML = `

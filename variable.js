@@ -1,0 +1,21 @@
+const allSquares = document.querySelectorAll('.squares');
+
+let validIds = [],
+  newIds = [],
+  killIds = [],
+  x,
+  y,
+  z,
+  a,
+  b,
+  c,
+  d,
+  e,
+  f,
+  g,
+  h,
+  validId,
+  currentValidId,
+  validSquares,
+  pawnKill,
+  pawnKill2;
