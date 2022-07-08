@@ -65,12 +65,12 @@ rows.map((row, index) => {
             break;
           case 3:
             square.innerHTML = `
-                <i class="fas fa-chess-king black king rotate"></i>
+                <i class="fas fa-chess-queen black queen rotate"></i>
               `;
             break;
           case 4:
             square.innerHTML = `
-                <i class="fas fa-chess-queen black queen rotate"></i>
+                <i class="fas fa-chess-king black king rotate"></i>
               `;
             break;
           default:
@@ -85,13 +85,13 @@ rows.map((row, index) => {
           `;
       });
       break;
-    // case 5:
-    //   squares.forEach((square) => {
-    //     square.innerHTML = `
-    //     <i class ="fas fa-chess-pawn black pawn rotate"></i>
-    //     `;
-    //   });
-    //   break;
+    case 5:
+      squares.forEach((square) => {
+        square.innerHTML = `
+        <i class ="fas fa-chess-pawn black pawn rotate"></i>
+        `;
+      });
+      break;
     case 6:
       squares.forEach((square) => {
         square.innerHTML = `
@@ -122,13 +122,13 @@ rows.map((row, index) => {
             break;
           case 4:
             square.innerHTML = `
-                <i class="fas fa-chess-king white king"></i>
+                <i class="fas fa-chess-queen white queen"></i>
 
               `;
             break;
           case 3:
             square.innerHTML = `
-                <i class="fas fa-chess-queen white queen"></i>
+                <i class="fas fa-chess-king white king"></i>
               `;
             break;
           default:

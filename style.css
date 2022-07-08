@@ -140,19 +140,20 @@ body {
   height: 100%;
   position: absolute;
   aspect-ratio: 1;
-  background: radial-gradient(#fff, teal);
+  background: radial-gradient(#fff, cyan, teal);
+  opacity: 0.9;
 }
 
 .current:before {
   content: '';
   width: 100%;
   aspect-ratio: 1;
-  background: radial-gradient(#000 60%, teal);
+  background: radial-gradient(#000 60%, cyan, teal);
 }
 
 .danger:before {
   content: '';
   width: 100%;
   aspect-ratio: 1;
-  background: radial-gradient(#f00 60%, #000);
+  background: radial-gradient(#f33 60%, #ffe6e6);
 }

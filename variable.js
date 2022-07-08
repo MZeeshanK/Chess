@@ -3,6 +3,7 @@ const allSquares = document.querySelectorAll('.squares');
 let validIds = [],
   newIds = [],
   killIds = [],
+  newKillIds = [],
   x,
   y,
   z,
@@ -17,5 +18,4 @@ let validIds = [],
   validId,
   currentValidId,
   validSquares,
-  pawnKill,
-  pawnKill2;
+  killSquare;

@@ -4,20 +4,18 @@ function whitePawn() {
   a = 10 * (x - 1) + y;
   b = 10 * (x - 2) + y;
 
-  c = 10 * (x - 1) + y - 1;
-  d = 10 * (x - 1) + y + 1;
-
-  pawnKill = document.querySelector(`#key-${c}`);
-  pawnKill2 = document.querySelector(`#key-${d}`);
-
-  validIds.push(a, b);
-  if (
-    pawnKill.children[0].classList.contains('black') ||
-    pawnKill2.children[0].classList.contains('black')
-  ) {
-    pawnKill.classList.add('danger');
-    pawnKill2.classList.add('danger');
+  if (x === 6) {
+    validIds.push(a, b);
+  } else {
+    validIds.push(a);
   }
+}
+
+function whitePawnKill() {
+  a = 10 * (x - 1) + y - 1;
+  b = 10 * (x - 1) + y + 1;
+
+  killIds.push(a, b);
 }
 
 // black pawn movement
