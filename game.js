@@ -109,11 +109,9 @@ allSquares.forEach((squares) => {
       newIds.forEach((valid) => {
         validSquares = document.querySelectorAll(`#key-${valid}`);
         validSquares.forEach((validSquare) => {
-          if (validSquare.hasChildNodes(true)) {
+          if (validSquare.hasChildNodes()) {
             if (validSquare.children[0].classList.contains('black')) {
               validSquare.classList.toggle('danger');
-            } else if (validSquare.children[0].classList.contains('white')) {
-              return;
             }
           } else {
             validSquare.classList.toggle('valid');
@@ -121,9 +119,10 @@ allSquares.forEach((squares) => {
           validSquare.addEventListener('click', (e) => {
             if (
               e.target.classList.contains('valid') ||
-              e.target.classList.console('danger')
+              e.target.classList.contains('danger')
             ) {
               e.target.appendChild(currentPiece);
+              // document.querySelector(currentSquare).innerHTML = '';
             }
             allSquares.forEach((allSquare) => {
               allSquare.classList.remove('valid');
@@ -155,6 +154,8 @@ allSquares.forEach((squares) => {
     } else {
       return;
     }
+
+    console.log(validIds);
 
     validIds = [];
     newIds = [];

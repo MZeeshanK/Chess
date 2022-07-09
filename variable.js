@@ -18,4 +18,7 @@ let validIds = [],
   validId,
   currentValidId,
   validSquares,
-  killSquare;
+  killSquare,
+  firstPawnSquare,
+  secondPawnSquare,
+  blockPathSquare;
