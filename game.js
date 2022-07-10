@@ -2,6 +2,17 @@
 
 allSquares.forEach((squares) => {
   squares.addEventListener('click', (e) => {
+    allSquares.forEach((current) => {
+      if (
+        current.classList.contains('current') ||
+        current.classList.contains('danger') ||
+        current.classList.contains('valid')
+      ) {
+        current.classList.remove('current');
+        current.classList.remove('valid');
+        current.classList.remove('danger');
+      }
+    });
     // variables to ease the code
     const square = e.target,
       piece = e.target.children[0];
@@ -22,7 +33,6 @@ allSquares.forEach((squares) => {
       if (piece.classList.contains('white')) {
         if (piece.classList.contains('pawn')) {
           whitePawn();
-          whitePawnKill();
         } else if (piece.classList.contains('rook')) {
           rook();
         } else if (piece.classList.contains('knight')) {
@@ -64,47 +74,9 @@ allSquares.forEach((squares) => {
         }
       });
 
-      killIds.sort();
-      killIds.filter((kill) => {
-        if (
-          kill <= 77 &&
-          kill >= 0 &&
-          kill !== 8 &&
-          kill !== 9 &&
-          kill !== 18 &&
-          kill !== 19 &&
-          kill !== 28 &&
-          kill !== 29 &&
-          kill !== 38 &&
-          kill !== 39 &&
-          kill !== 48 &&
-          kill !== 49 &&
-          kill !== 58 &&
-          kill !== 59 &&
-          kill !== 68 &&
-          kill !== 69
-        ) {
-          newKillIds.push(kill);
-        }
-      });
-
-      //
-
-      square.classList.toggle('current');
       currentSquare = document.querySelector(`#key-${currentValidId}`);
-      currentPiece = currentSquare.children[0];
-
-      killIds.forEach((kills) => {
-        killSquare = document.querySelectorAll(`#key-${kills}`);
-        killSquare.forEach((kill) => {
-          if (
-            kill.hasChildNodes() &&
-            kill.children[0].classList.contains('black')
-          ) {
-            kill.classList.toggle('valid');
-          }
-        });
-      });
+      currentSquare.classList.toggle('current');
+      newIds.push(currentValidId);
 
       newIds.forEach((valid) => {
         validSquares = document.querySelectorAll(`#key-${valid}`);
@@ -130,17 +102,18 @@ allSquares.forEach((squares) => {
               allSquare.classList.remove('danger');
               allSquare.classList.toggle('rotate');
             });
-            if (outerBoard.classList.contains('rotate-animate')) {
-              outerBoard.classList.remove('rotate-animate');
-              outerBoard.classList.add('reverse-rotate-animate');
-            } else if (
-              outerBoard.classList.contains('reverse-rotate-animate')
-            ) {
-              outerBoard.classList.remove('reverse-rotate-animate');
-              outerBoard.classList.add('rotate-animate');
-            } else {
-              outerBoard.classList.add('rotate-animate');
-            }
+            // next move
+            // if (outerBoard.classList.contains('rotate-animate')) {
+            //   outerBoard.classList.remove('rotate-animate');
+            //   outerBoard.classList.add('reverse-rotate-animate');
+            // } else if (
+            //   outerBoard.classList.contains('reverse-rotate-animate')
+            // ) {
+            //   outerBoard.classList.remove('reverse-rotate-animate');
+            //   outerBoard.classList.add('rotate-animate');
+            // } else {
+            //   outerBoard.classList.add('rotate-animate');
+            // }
           });
         });
       });
@@ -155,10 +128,9 @@ allSquares.forEach((squares) => {
       return;
     }
 
-    console.log(validIds);
+    console.log(newIds);
 
     validIds = [];
     newIds = [];
-    killIds = [];
   });
 });
