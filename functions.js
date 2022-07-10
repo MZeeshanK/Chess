@@ -5,13 +5,7 @@ function whitePawn() {
   b = 10 * (x - 2) + y;
 
   blockPawn();
-}
-
-function whitePawnKill() {
-  a = 10 * (x - 1) + y - 1;
-  b = 10 * (x - 1) + y + 1;
-
-  killIds.push(a, b);
+  whitePawnKill();
 }
 
 // black pawn movement
@@ -20,13 +14,7 @@ function blackPawn() {
   b = 10 * (x + 2) + y;
 
   blockPawn();
-}
-
-function blackPawnKill() {
-  a = 10 * (x + 1) + y - 1;
-  b = 10 * (x + 1) + y + 1;
-
-  killIds.push(a, b);
+  blackPawnKill();
 }
 
 // block Pawn Path
@@ -43,6 +31,41 @@ function blockPawn() {
       validIds.push(a, b);
     } else {
       validIds.push(a);
+    }
+  }
+}
+
+function whitePawnKill() {
+  a = 10 * (x - 1) + y - 1;
+  b = 10 * (x - 1) + y + 1;
+
+  pawnKillCondition('black');
+}
+
+function blackPawnKill() {
+  a = 10 * (x + 1) + y - 1;
+  b = 10 * (x + 1) + y + 1;
+
+  pawnKillCondition('white');
+}
+
+function pawnKillCondition(color) {
+  firstPawnSquare = document.querySelector(`#key-${a}`);
+  secondPawnSquare = document.querySelector(`#key-${b}`);
+
+  if (firstPawnSquare !== null) {
+    if (firstPawnSquare.innerHTML !== '') {
+      if (firstPawnSquare.children[0].classList.contains(color)) {
+        validIds.push(a);
+      }
+    }
+  }
+
+  if (secondPawnSquare !== null) {
+    if (secondPawnSquare.innerHTML !== '') {
+      if (secondPawnSquare.children[0].classList.contains(color)) {
+        validIds.push(b);
+      }
     }
   }
 }
