@@ -160,9 +160,12 @@ function bishop() {
 
     blockPathSquare = document.querySelector(`#key-${a}`);
 
-    if (blockPathSquare.hasChildNodes()) {
-      break;
+    if (blockPathSquare !== null) {
+      if (blockPathSquare.innerHTML !== '') {
+        break;
+      }
     }
+
     i++;
   }
 
@@ -175,8 +178,10 @@ function bishop() {
 
     blockPathSquare = document.querySelector(`#key-${a}`);
 
-    if (blockPathSquare.hasChildNodes()) {
-      break;
+    if (blockPathSquare !== null) {
+      if (blockPathSquare.innerHTML !== '') {
+        break;
+      }
     }
     i++;
   }
@@ -190,8 +195,10 @@ function bishop() {
 
     blockPathSquare = document.querySelector(`#key-${a}`);
 
-    if (blockPathSquare.hasChildNodes()) {
-      break;
+    if (blockPathSquare !== null) {
+      if (blockPathSquare.innerHTML !== '') {
+        break;
+      }
     }
     i++;
   }
@@ -205,8 +212,10 @@ function bishop() {
 
     blockPathSquare = document.querySelector(`#key-${a}`);
 
-    if (blockPathSquare.hasChildNodes()) {
-      break;
+    if (blockPathSquare !== null) {
+      if (blockPathSquare.innerHTML !== '') {
+        break;
+      }
     }
     i++;
   }

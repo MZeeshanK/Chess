@@ -21,4 +21,5 @@ let validIds = [],
   killSquare,
   firstPawnSquare,
   secondPawnSquare,
-  blockPathSquare;
+  blockPathSquare,
+  allSquareELements;
