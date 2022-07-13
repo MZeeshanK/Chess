@@ -22,30 +22,6 @@ body {
   justify-content: center;
 }
 
-.rotate {
-  transform: rotate(180deg);
-}
-
-.rotate-animate {
-  animation: rotate 0.5s linear forwards;
-}
-
-.reverse-rotate-animate {
-  animation: reverse 0.5s linear forwards;
-}
-
-@keyframes rotate {
-  100% {
-    transform: rotate(-180deg);
-  }
-}
-
-@keyframes reverse {
-  100% {
-    transform: rotate(0deg);
-  }
-}
-
 .inner-board {
   height: 95%;
   aspect-ratio: 1;
@@ -61,7 +37,7 @@ body {
 }
 
 .inner-board i.black {
-  color: #000;
+  color: #000 !important;
   text-shadow: 3px 3px #fff, -3px -3px #fff, -3px 3px #fff, 3px -3px #fff;
   transform: rotateX(-30deg);
 }
@@ -148,12 +124,19 @@ body {
   content: '';
   width: 100%;
   aspect-ratio: 1;
-  background: radial-gradient(#000 60%, cyan, teal);
+  background: radial-gradient(#000 50%, cyan, teal);
 }
 
 .danger:before {
   content: '';
   width: 100%;
   aspect-ratio: 1;
-  background: radial-gradient(#f33 60%, #ffe6e6);
+  background: radial-gradient(#f00 50%, cyan, teal);
+}
+
+.check:before {
+  content: '';
+  width: 100%;
+  aspect-ratio: 1;
+  background: radial-gradient(#f00 50%, #000);
 }

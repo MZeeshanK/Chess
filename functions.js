@@ -4,7 +4,7 @@ function whitePawn() {
   a = 10 * (x - 1) + y;
   b = 10 * (x - 2) + y;
 
-  blockPawn();
+  blockPawn(7, 2);
   whitePawnKill();
 }
 
@@ -13,24 +13,36 @@ function blackPawn() {
   a = 10 * (x + 1) + y;
   b = 10 * (x + 2) + y;
 
-  blockPawn();
+  blockPawn(2, 7);
   blackPawnKill();
 }
 
 // block Pawn Path
-function blockPawn() {
+function blockPawn(condition, lastRow) {
   firstPawnSquare = document.querySelector(`#key-${a}`);
   secondPawnSquare = document.querySelector(`#key-${b}`);
 
-  if (firstPawnSquare.hasChildNodes()) {
-    return;
-  } else if (secondPawnSquare.hasChildNodes()) {
-    validIds.push(a);
-  } else {
-    if (x === 6) {
-      validIds.push(a, b);
+  if (x === lastRow) {
+    if (firstPawnSquare.innerHTML !== '') {
+      return;
     } else {
+      if (x === condition) {
+        validIds.push(a, b);
+      } else {
+        validIds.push(a);
+      }
+    }
+  } else {
+    if (firstPawnSquare.innerHTML !== '') {
+      return;
+    } else if (secondPawnSquare.innerHTML !== '') {
       validIds.push(a);
+    } else {
+      if (x === condition) {
+        validIds.push(a, b);
+      } else {
+        validIds.push(a);
+      }
     }
   }
 }
@@ -74,13 +86,13 @@ function pawnKillCondition(color) {
 function rook() {
   // down
   let i = 1;
-  while (x - i >= 0) {
+  while (x - i >= 1) {
     a = 10 * (x - i) + y;
 
     validIds.push(a);
     blockPathSquare = document.querySelector(`#key-${a}`);
 
-    if (blockPathSquare.hasChildNodes()) {
+    if (blockPathSquare.innerHTML !== '') {
       break;
     }
 
@@ -89,14 +101,14 @@ function rook() {
 
   // up
   i = 1;
-  while (x + i <= 7) {
+  while (x + i <= 8) {
     a = 10 * (x + i) + y;
 
     validIds.push(a);
 
     blockPathSquare = document.querySelector(`#key-${a}`);
 
-    if (blockPathSquare.hasChildNodes()) {
+    if (blockPathSquare.innerHTML !== '') {
       break;
     }
     i++;
@@ -104,14 +116,14 @@ function rook() {
 
   // left
   i = 1;
-  while (y - i >= 0) {
+  while (y - i >= 1) {
     a = 10 * x + y - i;
 
     validIds.push(a);
 
     blockPathSquare = document.querySelector(`#key-${a}`);
 
-    if (blockPathSquare.hasChildNodes()) {
+    if (blockPathSquare.innerHTML !== '') {
       break;
     }
 
@@ -120,7 +132,7 @@ function rook() {
 
   // right
   i = 1;
-  while (y + i <= 7) {
+  while (y + i <= 8) {
     a = 10 * x + y + i;
 
     validIds.push(a);
@@ -153,7 +165,7 @@ function knight() {
 function bishop() {
   // down left
   let i = 1;
-  while (y - i >= 0) {
+  while (y - i >= 1) {
     a = 10 * (x - i) + y - i;
 
     validIds.push(a);
@@ -171,25 +183,8 @@ function bishop() {
 
   // up left
   i = 1;
-  while (y - i >= 0) {
+  while (y - i >= 1) {
     a = 10 * (x + i) + y - i;
-
-    validIds.push(a);
-
-    blockPathSquare = document.querySelector(`#key-${a}`);
-
-    if (blockPathSquare !== null) {
-      if (blockPathSquare.innerHTML !== '') {
-        break;
-      }
-    }
-    i++;
-  }
-
-  // up right
-  i = 1;
-  while (y + i <= 7) {
-    a = 10 * (x + i) + y + i;
 
     validIds.push(a);
 
@@ -205,7 +200,24 @@ function bishop() {
 
   // down right
   i = 1;
-  while (y + i <= 7) {
+  while (y + i <= 8) {
+    a = 10 * (x + i) + y + i;
+
+    validIds.push(a);
+
+    blockPathSquare = document.querySelector(`#key-${a}`);
+
+    if (blockPathSquare !== null) {
+      if (blockPathSquare.innerHTML !== '') {
+        break;
+      }
+    }
+    i++;
+  }
+
+  // up right
+  i = 1;
+  while (y + i <= 9) {
     a = 10 * (x - i) + y + i;
 
     validIds.push(a);

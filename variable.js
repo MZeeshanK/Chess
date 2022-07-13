@@ -1,9 +1,7 @@
-const allSquares = document.querySelectorAll('.squares');
+let allSquares = document.querySelectorAll('.squares');
 
 let validIds = [],
   newIds = [],
-  killIds = [],
-  newKillIds = [],
   x,
   y,
   z,
@@ -15,11 +13,9 @@ let validIds = [],
   f,
   g,
   h,
-  validId,
   currentValidId,
   validSquares,
   killSquare,
   firstPawnSquare,
   secondPawnSquare,
-  blockPathSquare,
-  allSquareELements;
+  blockPathSquare;

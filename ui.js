@@ -26,17 +26,14 @@ rows.map((row, index) => {
   }
   let squares = row.children;
   squares = Array.from(squares);
-  outerIndex = index;
+  outerIndex = index + 1;
 
   squares.map((square, index) => {
-    index = index;
+    index = index + 1;
     let number;
     number = `key-${outerIndex}${index}`;
-    if (outerIndex === 0) {
-      number = `key-${index}`;
-    }
     if (row.classList.contains('row-reverse')) {
-      number = `key-${outerIndex}${7 - index}`;
+      number = `key-${outerIndex}${9 - index}`;
     }
     square.id = number;
   });
@@ -47,30 +44,30 @@ rows.map((row, index) => {
         switch (index) {
           case 0:
           case 7:
-            square.innerHTML = ` 
-                <i class="fas fa-chess-rook black rook rotate"></i>
+            square.innerHTML = `
+                <i class="fas fa-chess-rook black rook "></i>
               `;
             break;
           case 1:
           case 6:
-            square.innerHTML = ` 
-                <i class="fas fa-chess-knight black knight rotate"></i>
+            square.innerHTML = `
+                <i class="fas fa-chess-knight black knight "></i>
               `;
             break;
           case 2:
           case 5:
             square.innerHTML = `
-                <i class="fas fa-chess-bishop black bishop rotate"></i>
+                <i class="fas fa-chess-bishop black bishop "></i>
               `;
             break;
           case 3:
             square.innerHTML = `
-                <i class="fas fa-chess-queen black queen rotate"></i>
+                <i class="fas fa-chess-queen black queen "></i>
               `;
             break;
           case 4:
             square.innerHTML = `
-                <i class="fas fa-chess-king black king rotate"></i>
+                <i class="fas fa-chess-king black king "></i>
               `;
             break;
           default:
@@ -81,7 +78,7 @@ rows.map((row, index) => {
     case 1:
       squares.forEach((square) => {
         square.innerHTML = `
-            <i class ="fas fa-chess-pawn black pawn rotate"></i>
+            <i class ="fas fa-chess-pawn black pawn "></i>
           `;
       });
       break;
