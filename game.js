@@ -1,220 +1,185 @@
-// Functionality
-
-allSquares.forEach((squares) => {
-  squares.addEventListener('click', whiteMain);
-  // squares.addEventListener('click', blackMain);
+allPieces.forEach((pieces) => {
+  if (pieces.classList.contains('white')) {
+    pieces.addEventListener('click', whiteMain);
+  } else {
+    // pieces.addEventListener('click', blackMain);
+  }
 });
 
-function move(e, condition, reverseCondition) {
+function whiteMain(e) {
+  play(e, 'white', 'black');
+}
+
+function blackMain(e) {
+  play(e, 'black', 'white');
+}
+
+function play(e, color, invertedColor) {
+  // allPieces.forEach((pieces) => {
+  //   if (color === 'white') {
+  //     pieces.removeEventListener('click', blackMain);
+  //   } else {
+  //     pieces.removeEventListener('click', whiteMain);
+  //   }
+  // });
   resetSquares(e);
-  // variables to ease the code
-  let ID = e.target.id;
 
-  if (e.target.innerHTML !== '') {
-    // finding the position of the pieces
+  let ID = e.target.parentElement.id;
 
-    ID = ID.slice(-2);
-    x = ID.substring(0, 1);
-    y = ID.substring(1, 2);
-    x = Number(x);
-    y = Number(y);
-    ID = Number(ID);
-    currentValidId = ID;
-    z = 10 * x + y;
+  ID = ID.slice(-2);
+  x = Number(ID.substring(0, 1));
+  y = Number(ID.substring(1, 2));
 
-    if (e.target.children[0].classList.contains(condition)) {
-      if (e.target.children[0].classList.contains('pawn')) {
-        pawn(condition);
-      } else if (e.target.children[0].classList.contains('rook')) {
-        rook();
-      } else if (e.target.children[0].classList.contains('knight')) {
-        knight();
-      } else if (e.target.children[0].classList.contains('bishop')) {
-        bishop();
-      } else if (e.target.children[0].classList.contains('queen')) {
-        queen();
+  current = Number(ID);
+
+  if (e.target.classList.contains(color)) {
+    if (e.target.classList.contains('pawn')) {
+      if (color === 'white') {
+        whitePawn();
       } else {
-        king();
-        let ids;
-        if (condition === 'white') {
-          ids = 85;
-        } else {
-          ids = 15;
-        }
-        kingRook(e, ids, condition);
+        blackPawn();
       }
+    } else if (e.target.classList.contains('rook')) {
+      rook();
+    } else if (e.target.classList.contains('knight')) {
+      knight();
+    } else if (e.target.classList.contains('bishop')) {
+      bishop();
+    } else if (e.target.classList.contains('queen')) {
+      queen();
     } else {
-      return;
-    }
-
-    // filtering the valid moves
-    validIds.sort();
-    validIds.filter((valid) => {
-      if (
-        valid <= 88 &&
-        valid >= 11 &&
-        valid !== 20 &&
-        valid !== 19 &&
-        valid !== 30 &&
-        valid !== 29 &&
-        valid !== 40 &&
-        valid !== 39 &&
-        valid !== 50 &&
-        valid !== 49 &&
-        valid !== 60 &&
-        valid !== 59 &&
-        valid !== 70 &&
-        valid !== 69 &&
-        valid !== 80 &&
-        valid !== 79
-      ) {
-        newIds.push(valid);
-      }
-    });
-
-    currentSquare = document.querySelector(`#key-${currentValidId}`);
-    currentSquare.classList.toggle('current');
-
-    newIds.forEach((ids) => {
-      validSquares = document.querySelectorAll(`#key-${ids}`);
-
-      validSquares.forEach((valid) => {
-        valid.classList.toggle('valid');
-
-        if (valid.innerHTML !== '') {
-          valid.classList.remove('valid');
-          if (valid.children[0].classList.contains(reverseCondition)) {
-            if (valid.children[0].classList.contains('king')) {
-              valid.classList.toggle('check');
-            } else {
-              valid.classList.toggle('danger');
-            }
-          }
-        }
-
-        // place in new position
-        valid.addEventListener('click', (e) => {
-          if (e.target.innerHTML === '') {
-            e.target.appendChild(currentSquare.children[0]);
-
-            currentSquare.innerHTML = '';
-          } else {
-            if (e.target.children[0].classList.contains(reverseCondition)) {
-              e.target.innerHTML = '';
-              e.target.appendChild(currentSquare.children[0]);
-              currentSquare.innerHTML = '';
-            }
-          }
-          specialPawn(e, condition);
-        });
-      });
-    });
-  } else if (e.target.classList.contains('fas')) {
-    const piece = e.target;
-    if (piece.classList.contains('white')) {
-      console.log(343);
-    } else {
-      console.log(349);
+      king();
     }
   } else {
     return;
   }
 
-  if (condition === 'white') {
-    switchtoBlack();
-  } else {
-    switchToWhite();
-  }
-  resetArrays();
+  currentSquare = document.querySelector(`#key-${current}`);
+  currentSquare.classList.toggle('current');
+
+  currentPiece = currentSquare.children[0];
+
+  validIds.sort();
+  validIds.filter((valid) => {
+    if (
+      valid >= 11 &&
+      valid <= 88 &&
+      valid !== 19 &&
+      valid !== 20 &&
+      valid !== 29 &&
+      valid !== 30 &&
+      valid !== 39 &&
+      valid !== 40 &&
+      valid !== 49 &&
+      valid !== 50 &&
+      valid !== 59 &&
+      valid !== 60 &&
+      valid !== 69 &&
+      valid !== 70 &&
+      valid !== 79 &&
+      valid !== 80
+    ) {
+      newIds.push(valid);
+    }
+  });
+
+  newIds.forEach((valid) => {
+    validSquares = document.querySelectorAll(`#key-${valid}`);
+    validMoves(invertedColor);
+
+    validSquares.forEach((squares) => {
+      squares.addEventListener('click', (e) => {
+        movement(e, color);
+      });
+    });
+    allPieces.forEach((pieces) => {
+      pieces.addEventListener('click', (e) => {
+        kill(e, color);
+      });
+    });
+  });
+
+  newIds = [];
+  validIds = [];
 }
 
 function resetSquares(e) {
-  allSquares.forEach((all) => {
-    if (e.target.id !== `key-${currentValidId}`) {
+  allSquares.forEach((squares) => {
+    if (e.target.parentElement.id !== `key-${current}`) {
       if (
-        all.classList.contains('current') ||
-        all.classList.contains('danger') ||
-        all.classList.contains('valid')
+        squares.classList.contains('current') ||
+        squares.classList.contains('valid') ||
+        squares.classList.contains('check') ||
+        squares.classList.contains('danger')
       ) {
-        all.classList.remove('danger');
-        all.classList.remove('valid');
-        all.classList.remove('current');
+        squares.classList.remove('current', 'danger', 'valid', 'check');
       }
     }
   });
 }
 
-function resetArrays() {
-  validIds = [];
-  newIds = [];
+function validMoves(invertedColor) {
+  validSquares.forEach((squares) => {
+    squares.classList.toggle('valid');
+    if (squares.hasChildNodes()) {
+      squares.classList.remove('valid');
+      if (squares.children[0].classList.contains(invertedColor)) {
+        if (squares.children[0].classList.contains('king')) {
+          squares.classList.toggle('check');
+        } else {
+          squares.classList.toggle('danger');
+        }
+      }
+    }
+  });
 }
 
-function pawn(condition) {
-  if (condition === 'black') {
-    blackPawn();
-  } else {
-    whitePawn();
+function movement(e, color) {
+  if (e.target.innerHTML === '' && e.target.classList.contains('valid')) {
+    e.target.appendChild(currentPiece);
+    currentSquare.innerHTML = '';
+
+    switchPlayers(color);
+    resetSquares(e);
   }
 }
 
-function switchtoBlack() {
-  allSquares.forEach((squares) => {
-    squares.removeEventListener('click', whiteMain);
-    squares.addEventListener('click', blackMain);
-  });
-}
+function kill(e, color) {
+  if (e.target.parentElement.classList.contains('danger')) {
+    killPiece = e.target;
+    killSquare = killPiece.parentElement;
 
-function switchToWhite() {
-  allSquares.forEach((squares) => {
-    squares.removeEventListener('click', blackMain);
-    squares.addEventListener('click', whiteMain);
-  });
-}
-
-function whiteMain(e) {
-  move(e, 'white', 'black');
-}
-
-function blackMain(e) {
-  move(e, 'black', 'white');
-}
-
-function specialPawn(e, color) {
-  if (e.target.children[0].classList.contains('pawn')) {
-    let str = e.target.id;
     if (color === 'white') {
-      if (str.substring(str.length - 2, str.length - 1) === '1') {
-        e.target.innerHTML = `
-            <i class="fas fa-chess-queen white queen"></i>
-          `;
+      if (blackKill.innerHTML === '') {
+        blackKill.appendChild(killPiece);
+      } else {
+        blackKill.insertBefore(killPiece, blackKill.children[0]);
       }
-    } else {
-      if (str.substring(str.length - 2, str.length - 1) === '8') {
-        e.target.innerHTML = `
-            <i class="fas fa-chess-queen black queen"></i>
-          `;
+    } else if (color === 'black') {
+      if (whiteKill.innerHTML === '') {
+        whiteKill.appendChild(killPiece);
+      } else {
+        whiteKill.insertBefore(killPiece, whiteKill.children[0]);
       }
     }
+
+    killSquare.appendChild(currentPiece);
+    currentSquare.innerHTML = '';
+
+    switchPlayers(color);
+
+    resetSquares(e);
   }
 }
 
-function kingRook(e, ids, color) {
-  let required = document.querySelector(`#key-${ids}`);
-  let required2 = document.querySelector(`#key-${ids + 1}`);
-  let required3 = document.querySelector(`#key-${ids + 2}`);
-  let required4 = document.querySelector(`#key-${ids + 3}`);
-  validIds.push(ids + 3);
-  if (e.target.children[0].classList.contains(`king ${color}`)) {
-    if (
-      required.children[0].classList.contains(`king ${color}`) &&
-      required2.innerHTML === '' &&
-      required3.innerHTML === '' &&
-      required4.children[0].classList.contains(`rook ${color}`)
-    ) {
-      required2.innerHTML = required4.innerHTML;
-      required3.innerHTML = required.innerHTML;
-      required.innerHTML = '';
-      required4.innerHTML = '';
+function switchPlayers(color) {
+  allPieces.forEach((pieces) => {
+    if (color === 'white') {
+      pieces.removeEventListener('click', whiteMain);
+      pieces.addEventListener('click', blackMain);
+    } else {
+      pieces.removeEventListener('click', blackMain);
+      pieces.addEventListener('click', whiteMain);
     }
-  }
+  });
 }

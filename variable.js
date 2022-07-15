@@ -1,10 +1,12 @@
-let allSquares = document.querySelectorAll('.squares');
+const whiteKill = document.querySelector('.white-kill'),
+  blackKill = document.querySelector('.black-kill');
 
-let validIds = [],
+let allSquares = document.querySelectorAll('.squares'),
+  allPieces = document.querySelectorAll('.chess'),
+  validIds = [],
   newIds = [],
   x,
   y,
-  z,
   a,
   b,
   c,
@@ -13,9 +15,7 @@ let validIds = [],
   f,
   g,
   h,
-  currentValidId,
-  validSquares,
-  killSquare,
   firstPawnSquare,
-  secondPawnSquare,
-  blockPathSquare;
+  secondPawnSquare;
+
+let currentSquare, current;

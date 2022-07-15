@@ -12,14 +12,32 @@ body {
 }
 
 .board {
-  height: 90vh;
-  margin-top: 5vh;
-  aspect-ratio: 1;
-  background-color: #3d2600;
+  height: 95vh;
+  margin-top: 2.5vh;
+  width: 75vw;
+  /* background-color: #3d2600; */
+  background: url('img/dark-wood.jpg');
   border-radius: 1vw;
   display: flex;
   align-items: center;
+  justify-content: space-around;
+}
+
+.white-kill,
+.black-kill {
+  height: 100%;
+  width: 15%;
+  /* background: white; */
+  border-radius: inherit;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
   justify-content: center;
+  flex-direction: column;
+}
+
+.white-kill {
+  direction: rtl;
 }
 
 .inner-board {
@@ -31,45 +49,31 @@ body {
   flex-direction: column;
   position: relative;
 }
-
-.inner-board i {
-  position: absolute;
+img {
+  isolation: isolate;
 }
 
-.inner-board i.black {
-  color: #000 !important;
-  text-shadow: 3px 3px #fff, -3px -3px #fff, -3px 3px #fff, 3px -3px #fff;
-  transform: rotateX(-30deg);
+img.black {
+  filter: drop-shadow(0px 1px #fff) drop-shadow(-1px 0px #fff)
+    drop-shadow(1px 0px #fff) drop-shadow(0px -1px #fff);
+  height: 100%;
+  width: 100%;
 }
 
-.inner-board i.white {
-  color: #fff;
-  text-shadow: 3px 3px #000, -3px -3px #000, -3px 3px #000, 3px -3px #000;
-  transform: rotateX(-30deg);
+img.white {
+  height: 100%;
+  width: 100%;
 }
 
-.inner-board .pawn {
-  font-size: 48px;
+img.pawn {
+  padding: 0.3rem;
 }
 
-.inner-board .rook,
-.inner-board .knight,
-.inner-board .bishop {
-  font-size: 50px;
+.white-kill > img,
+.black-kill > img {
+  height: 65px;
+  width: 65px;
 }
-
-.inner-board .queen {
-  font-size: 52px;
-}
-
-.inner-board .king {
-  font-size: 55px;
-}
-
-.inner-board .piece-white {
-  fill: #fff;
-}
-
 .row {
   height: calc(100% / 8);
   aspect-ratio: 8/1;
@@ -92,11 +96,11 @@ body {
 }
 
 .squares:nth-child(odd) {
-  background-color: #241200;
+  background: url('img/dark-wood-90.jpg') no-repeat center center / cover;
 }
 
 .squares:nth-child(even) {
-  background-color: #a58355;
+  background: url('img/light-wood.jpg') no-repeat center center / cover;
 }
 
 .squares:nth-child(odd):hover {
@@ -111,32 +115,43 @@ body {
   opacity: 0;
 }
 
-.valid:before {
+.valid::before {
   content: '';
-  height: 100%;
   position: absolute;
-  aspect-ratio: 1;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+
   background: radial-gradient(#fff, cyan, teal);
-  opacity: 0.9;
 }
 
-.current:before {
+.current::before {
   content: '';
+  height: 100%;
   width: 100%;
-  aspect-ratio: 1;
+  position: absolute;
+  top: 0;
+  left: 0;
   background: radial-gradient(#000 50%, cyan, teal);
 }
 
-.danger:before {
+.danger::before {
   content: '';
+  height: 100%;
   width: 100%;
-  aspect-ratio: 1;
+  position: absolute;
+  top: 0;
+  left: 0;
   background: radial-gradient(#f00 50%, cyan, teal);
 }
 
 .check:before {
   content: '';
+  height: 100%;
   width: 100%;
-  aspect-ratio: 1;
+  position: absolute;
+  top: 0;
+  left: 0;
   background: radial-gradient(#f00 50%, #000);
 }

@@ -65,20 +65,20 @@ function pawnKillCondition(color) {
   firstPawnSquare = document.querySelector(`#key-${a}`);
   secondPawnSquare = document.querySelector(`#key-${b}`);
 
-  if (firstPawnSquare !== null) {
-    if (firstPawnSquare.innerHTML !== '') {
-      if (firstPawnSquare.children[0].classList.contains(color)) {
-        validIds.push(a);
-      }
-    }
+  if (
+    firstPawnSquare !== null &&
+    firstPawnSquare.innerHTML !== '' &&
+    firstPawnSquare.children[0].classList.contains(color)
+  ) {
+    validIds.push(a);
   }
 
-  if (secondPawnSquare !== null) {
-    if (secondPawnSquare.innerHTML !== '') {
-      if (secondPawnSquare.children[0].classList.contains(color)) {
-        validIds.push(b);
-      }
-    }
+  if (
+    secondPawnSquare !== null &&
+    secondPawnSquare.innerHTML !== '' &&
+    secondPawnSquare.children[0].classList.contains(color)
+  ) {
+    validIds.push(b);
   }
 }
 
@@ -90,7 +90,7 @@ function rook() {
     a = 10 * (x - i) + y;
 
     validIds.push(a);
-    blockPathSquare = document.querySelector(`#key-${a}`);
+    let blockPathSquare = document.querySelector(`#key-${a}`);
 
     if (blockPathSquare.innerHTML !== '') {
       break;
@@ -106,9 +106,9 @@ function rook() {
 
     validIds.push(a);
 
-    blockPathSquare = document.querySelector(`#key-${a}`);
+    let blockPathSquare = document.querySelector(`#key-${a}`);
 
-    if (blockPathSquare.innerHTML !== '') {
+    if (blockPathSquare.hasChildNodes()) {
       break;
     }
     i++;
@@ -121,7 +121,7 @@ function rook() {
 
     validIds.push(a);
 
-    blockPathSquare = document.querySelector(`#key-${a}`);
+    let blockPathSquare = document.querySelector(`#key-${a}`);
 
     if (blockPathSquare.innerHTML !== '') {
       break;
@@ -137,7 +137,7 @@ function rook() {
 
     validIds.push(a);
 
-    blockPathSquare = document.querySelector(`#key-${a}`);
+    let blockPathSquare = document.querySelector(`#key-${a}`);
 
     if (blockPathSquare.hasChildNodes()) {
       break;
@@ -170,7 +170,7 @@ function bishop() {
 
     validIds.push(a);
 
-    blockPathSquare = document.querySelector(`#key-${a}`);
+    let blockPathSquare = document.querySelector(`#key-${a}`);
 
     if (blockPathSquare !== null) {
       if (blockPathSquare.innerHTML !== '') {
@@ -188,7 +188,7 @@ function bishop() {
 
     validIds.push(a);
 
-    blockPathSquare = document.querySelector(`#key-${a}`);
+    let blockPathSquare = document.querySelector(`#key-${a}`);
 
     if (blockPathSquare !== null) {
       if (blockPathSquare.innerHTML !== '') {
@@ -205,7 +205,7 @@ function bishop() {
 
     validIds.push(a);
 
-    blockPathSquare = document.querySelector(`#key-${a}`);
+    let blockPathSquare = document.querySelector(`#key-${a}`);
 
     if (blockPathSquare !== null) {
       if (blockPathSquare.innerHTML !== '') {
@@ -222,7 +222,7 @@ function bishop() {
 
     validIds.push(a);
 
-    blockPathSquare = document.querySelector(`#key-${a}`);
+    let blockPathSquare = document.querySelector(`#key-${a}`);
 
     if (blockPathSquare !== null) {
       if (blockPathSquare.innerHTML !== '') {
@@ -259,4 +259,11 @@ function king() {
   h = 10 * (x - 1) + y;
 
   validIds.push(a, b, c, d, e, f, g, h);
+}
+
+function kingRook(e, ids, color) {
+  let required = document.querySelector(`#key-${ids}`);
+  let required2 = document.querySelector(`#key-${ids + 1}`);
+  let required3 = document.querySelector(`#key-${ids + 2}`);
+  let required4 = document.querySelector(`#key-${ids + 3}`);
 }
