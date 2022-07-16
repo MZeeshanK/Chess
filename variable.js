@@ -18,4 +18,10 @@ let allSquares = document.querySelectorAll('.squares'),
   firstPawnSquare,
   secondPawnSquare;
 
-let currentSquare, current;
+let currentSquare,
+  current,
+  firstSquare,
+  secondSquare,
+  thirdSquare,
+  fourthSquare,
+  fifthSquare;

@@ -260,10 +260,3 @@ function king() {
 
   validIds.push(a, b, c, d, e, f, g, h);
 }
-
-function kingRook(e, ids, color) {
-  let required = document.querySelector(`#key-${ids}`);
-  let required2 = document.querySelector(`#key-${ids + 1}`);
-  let required3 = document.querySelector(`#key-${ids + 2}`);
-  let required4 = document.querySelector(`#key-${ids + 3}`);
-}

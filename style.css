@@ -15,7 +15,6 @@ body {
   height: 95vh;
   margin-top: 2.5vh;
   width: 75vw;
-  /* background-color: #3d2600; */
   background: url('img/dark-wood.jpg');
   border-radius: 1vw;
   display: flex;
@@ -27,7 +26,6 @@ body {
 .black-kill {
   height: 100%;
   width: 15%;
-  /* background: white; */
   border-radius: inherit;
   display: flex;
   flex-wrap: wrap;
@@ -44,10 +42,11 @@ body {
   height: 95%;
   aspect-ratio: 1;
   border-radius: inherit;
-  background-color: #553b10;
+  border: 10px solid #674510;
   display: flex;
   flex-direction: column;
   position: relative;
+  isolation: isolate;
 }
 img {
   isolation: isolate;
@@ -111,10 +110,6 @@ img.pawn {
   box-shadow: inset 0 0 10px 10px rgba(36, 18, 0, 0.6);
 }
 
-.hidden {
-  opacity: 0;
-}
-
 .valid::before {
   content: '';
   position: absolute;
@@ -122,8 +117,8 @@ img.pawn {
   left: 0;
   height: 100%;
   width: 100%;
-
-  background: radial-gradient(#fff, cyan, teal);
+  background: radial-gradient(cyan 30%, teal);
+  opacity: 0.8;
 }
 
 .current::before {
@@ -133,7 +128,8 @@ img.pawn {
   position: absolute;
   top: 0;
   left: 0;
-  background: radial-gradient(#000 50%, cyan, teal);
+  background: radial-gradient(teal 35%, #000);
+  opacity: 0.8;
 }
 
 .danger::before {
@@ -143,7 +139,8 @@ img.pawn {
   position: absolute;
   top: 0;
   left: 0;
-  background: radial-gradient(#f00 50%, cyan, teal);
+  background: radial-gradient(cyan, #f00);
+  opacity: 0.8;
 }
 
 .check:before {
@@ -154,4 +151,53 @@ img.pawn {
   top: 0;
   left: 0;
   background: radial-gradient(#f00 50%, #000);
+  opacity: 0.8;
+}
+
+@media only screen and (max-width: 700px) {
+  .board {
+    height: 100vh;
+    margin-top: 0;
+    width: 100vw;
+    background: url('img/dark-wood-90.jpg');
+    flex-direction: column;
+  }
+
+  .white-kill,
+  .black-kill {
+    height: 25%;
+    width: 100%;
+    flex-direction: row;
+  }
+
+  .inner-board {
+    width: 95%;
+  }
+}
+
+.rotate {
+  transform: rotate(180deg);
+}
+
+.rotate-animate {
+  animation: rotate 0.8s linear forwards;
+}
+
+.reverse-rotate-animate {
+  animation: reverseRotate 0.8s linear forwards;
+}
+
+@keyframes rotate {
+  100% {
+    transform: rotate(180deg);
+  }
+}
+
+@keyframes reverseRotate {
+  0% {
+    transform: rotate(180deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }

@@ -1,6 +1,20 @@
 const board = document.querySelector('.inner-board'),
   outerBoard = document.querySelector('.board');
 
+const whiteQueen = document.createElement('img');
+whiteQueen.setAttribute(
+  'src',
+  'https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/Chess_qlt45.svg/800px-Chess_qlt45.svg.png'
+);
+whiteQueen.classList.add('chess', 'queen', 'white');
+
+const blackQueen = document.createElement('img');
+blackQueen.setAttribute(
+  'src',
+  'https://upload.wikimedia.org/wikipedia/commons/thumb/4/47/Chess_qdt45.svg/800px-Chess_qdt45.svg.png'
+);
+blackQueen.classList.add('chess', 'queen', 'black');
+
 // UI ONLY
 
 for (let x = 1; x <= 8; x++) {
@@ -82,14 +96,6 @@ rows.map((row, index) => {
           `;
       });
       break;
-    // testing purposes
-    case 5:
-      // squares.forEach((square) => {
-      //   square.innerHTML = `
-      //     <i class ="fas fa-chess-pawn black pawn rotate"></i>
-      //     `;
-      // });
-      break;
     case 6:
       squares.forEach((square) => {
         square.innerHTML = `
@@ -121,7 +127,6 @@ rows.map((row, index) => {
           case 4:
             square.innerHTML = `
                 <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/Chess_qlt45.svg/800px-Chess_qlt45.svg.png" class="white chess queen"/>
-
               `;
             break;
           case 3:

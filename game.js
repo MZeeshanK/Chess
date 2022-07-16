@@ -1,8 +1,6 @@
 allPieces.forEach((pieces) => {
   if (pieces.classList.contains('white')) {
     pieces.addEventListener('click', whiteMain);
-  } else {
-    // pieces.addEventListener('click', blackMain);
   }
 });
 
@@ -15,13 +13,6 @@ function blackMain(e) {
 }
 
 function play(e, color, invertedColor) {
-  // allPieces.forEach((pieces) => {
-  //   if (color === 'white') {
-  //     pieces.removeEventListener('click', blackMain);
-  //   } else {
-  //     pieces.removeEventListener('click', whiteMain);
-  //   }
-  // });
   resetSquares(e);
 
   let ID = e.target.parentElement.id;
@@ -49,6 +40,13 @@ function play(e, color, invertedColor) {
       queen();
     } else {
       king();
+      if (color === 'white') {
+        castle(85, color);
+        castleQueen(85, color);
+      } else {
+        castle(15, color);
+        castleQueen(15, color);
+      }
     }
   } else {
     return;
@@ -89,15 +87,18 @@ function play(e, color, invertedColor) {
 
     validSquares.forEach((squares) => {
       squares.addEventListener('click', (e) => {
-        movement(e, color);
-      });
-    });
-    allPieces.forEach((pieces) => {
-      pieces.addEventListener('click', (e) => {
-        kill(e, color);
+        movement(e);
       });
     });
   });
+  allPieces.forEach((pieces) => {
+    pieces.addEventListener('click', (e) => {
+      kill(e);
+    });
+  });
+
+  // castleRight(color);
+  // castleLeft(color);
 
   newIds = [];
   validIds = [];
@@ -134,28 +135,28 @@ function validMoves(invertedColor) {
   });
 }
 
-function movement(e, color) {
+function movement(e) {
   if (e.target.innerHTML === '' && e.target.classList.contains('valid')) {
     e.target.appendChild(currentPiece);
     currentSquare.innerHTML = '';
 
-    switchPlayers(color);
+    switchPlayers();
     resetSquares(e);
   }
 }
 
-function kill(e, color) {
+function kill(e) {
   if (e.target.parentElement.classList.contains('danger')) {
     killPiece = e.target;
     killSquare = killPiece.parentElement;
 
-    if (color === 'white') {
+    if (currentPiece.classList.contains('white')) {
       if (blackKill.innerHTML === '') {
         blackKill.appendChild(killPiece);
       } else {
         blackKill.insertBefore(killPiece, blackKill.children[0]);
       }
-    } else if (color === 'black') {
+    } else {
       if (whiteKill.innerHTML === '') {
         whiteKill.appendChild(killPiece);
       } else {
@@ -163,23 +164,164 @@ function kill(e, color) {
       }
     }
 
+    let killId = killSquare.id;
+    killId = killId.slice(-2);
+    killId = killId.substring(0, 1);
+
     killSquare.appendChild(currentPiece);
     currentSquare.innerHTML = '';
 
-    switchPlayers(color);
+    if (killSquare.children[0].classList.contains('pawn')) {
+      if (killSquare.children[0].classList.contains('white')) {
+        if (killId === '1') {
+          killSquare.children[0].src =
+            'https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/Chess_qlt45.svg/800px-Chess_qlt45.svg.png';
+          killSquare.children[0].classList = 'chess white queen';
+        }
+      } else {
+        if (killId === '8') {
+          killSquare.children[0].src =
+            'https://upload.wikimedia.org/wikipedia/commons/thumb/4/47/Chess_qdt45.svg/800px-Chess_qdt45.svg.png';
+          killSquare.children[0].classList = 'chess black queen';
+        }
+      }
+    }
+
+    switchPlayers();
 
     resetSquares(e);
   }
 }
 
-function switchPlayers(color) {
-  allPieces.forEach((pieces) => {
-    if (color === 'white') {
+function switchPlayers() {
+  if (currentPiece.classList.contains('white')) {
+    allPieces.forEach((pieces) => {
       pieces.removeEventListener('click', whiteMain);
       pieces.addEventListener('click', blackMain);
-    } else {
+      pieces.classList.add('rotate');
+    });
+
+    outerBoard.classList.remove('reverse-rotate-animate');
+    outerBoard.classList.add('rotate-animate');
+  } else {
+    allPieces.forEach((pieces) => {
       pieces.removeEventListener('click', blackMain);
       pieces.addEventListener('click', whiteMain);
+      pieces.classList.remove('rotate');
+    });
+
+    outerBoard.classList.remove('rotate-animate');
+    outerBoard.classList.add('reverse-rotate-animate');
+  }
+}
+
+function castle(number, color) {
+  if (current === number) {
+    let firstSquare = document.querySelector(`#key-${number}`);
+    let secondSquare = document.querySelector(`#key-${number + 1}`);
+    let thirdSquare = document.querySelector(`#key-${number + 2}`);
+    let fourthSquare = document.querySelector(`#key-${number + 3}`);
+
+    if (
+      firstSquare.innerHTML !== '' &&
+      firstSquare.children[0].classList.contains('king') &&
+      firstSquare.children[0].classList.contains(color) &&
+      secondSquare.innerHTML === '' &&
+      thirdSquare.innerHTML === '' &&
+      fourthSquare.innerHTML !== '' &&
+      fourthSquare.children[0].classList.contains('rook') &&
+      fourthSquare.children[0].classList.contains(color)
+    ) {
+      fourthSquare.classList.toggle('valid');
     }
-  });
+    allPieces.forEach((pieces) => {
+      if (
+        pieces.parentElement.classList.contains('valid') &&
+        pieces.classList.contains(color)
+      ) {
+        if (color === 'white') {
+          pieces.removeEventListener('click', whiteMain);
+        } else {
+          pieces.removeEventListener('click', blackMain);
+        }
+        pieces.addEventListener('click', (e) => {
+          if (
+            e.target.classList.contains(color) &&
+            e.target.parentElement.classList.contains('valid')
+          ) {
+            thirdSquare.appendChild(firstSquare.children[0]);
+            secondSquare.appendChild(fourthSquare.children[0]);
+            firstSquare.innerHTML = '';
+            fourthSquare.innerHTML = '';
+
+            switchPlayers(e);
+
+            resetSquares(e);
+          }
+        });
+        if (color === 'white') {
+          pieces.addEventListener('click', whiteMain);
+        } else {
+          pieces.addEventListener('click', blackMain);
+        }
+      }
+    });
+  }
+}
+
+function castleQueen(number, color) {
+  if (current === number) {
+    let firstSquare = document.querySelector(`#key-${number}`);
+    let secondSquare = document.querySelector(`#key-${number - 1}`);
+    let thirdSquare = document.querySelector(`#key-${number - 2}`);
+    let fourthSquare = document.querySelector(`#key-${number - 3}`);
+    let fifthSquare = document.querySelector(`#key-${number - 4}`);
+
+    if (
+      firstSquare.innerHTML !== '' &&
+      firstSquare.children[0].classList.contains('king') &&
+      firstSquare.children[0].classList.contains(color) &&
+      secondSquare.innerHTML === '' &&
+      thirdSquare.innerHTML === '' &&
+      fourthSquare.innerHTML === '' &&
+      fifthSquare.innerHTML !== '' &&
+      fifthSquare.children[0].classList.contains('rook') &&
+      fifthSquare.children[0].classList.contains(color)
+    ) {
+      fifthSquare.classList.toggle('valid');
+    }
+    allPieces.forEach((pieces) => {
+      if (
+        pieces.parentElement.classList.contains('valid') &&
+        pieces.classList.contains(color)
+      ) {
+        if (color === 'white') {
+          pieces.removeEventListener('click', whiteMain);
+        } else {
+          pieces.removeEventListener('click', blackMain);
+        }
+        pieces.addEventListener('click', (e) => {
+          if (
+            e.target.classList.contains(color) &&
+            e.target.parentElement.classList.contains('valid')
+          ) {
+            thirdSquare.appendChild(firstSquare.children[0]);
+            secondSquare.appendChild(fifthSquare.children[0]);
+            firstSquare.innerHTML = '';
+            fourthSquare.innerHTML = '';
+            fifthSquare.innerHTML = '';
+
+            switchPlayers(e);
+
+            resetSquares(e);
+          }
+        });
+        if (color === 'white') {
+          pieces.addEventListener('click', whiteMain);
+        } else {
+          pieces.addEventListener('click', blackMain);
+        }
+      }
+    });
+  }
 }
