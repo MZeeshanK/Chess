@@ -172,6 +172,7 @@ img.pawn {
 
   .inner-board {
     width: 95%;
+    aspect-ratio: 1;
   }
 }
 
