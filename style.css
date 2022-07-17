@@ -171,7 +171,7 @@ img.pawn {
   }
 
   .inner-board {
-    width: 95%;
+    width: 95vw;
     aspect-ratio: 1;
   }
 }
