@@ -76,8 +76,8 @@ rows.map((row, index) => {
             break;
           case 3:
             square.innerHTML = `
-                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/47/Chess_qdt45.svg/800px-Chess_qdt45.svg.png" class="black chess queen"/>
-              `;
+              <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/47/Chess_qdt45.svg/800px-Chess_qdt45.svg.png" class="black chess queen"/>
+            `;
             break;
           case 4:
             square.innerHTML = `
@@ -92,8 +92,8 @@ rows.map((row, index) => {
     case 1:
       squares.forEach((square) => {
         square.innerHTML = `
-                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c7/Chess_pdt45.svg/800px-Chess_pdt45.svg.png" class="black chess pawn"/>
-          `;
+                  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c7/Chess_pdt45.svg/800px-Chess_pdt45.svg.png" class="black chess pawn"/>
+            `;
       });
       break;
     case 6:

@@ -31,21 +31,21 @@ function play(e, color, invertedColor) {
         blackPawn();
       }
     } else if (e.target.classList.contains('rook')) {
-      rook();
+      rook(validIds);
     } else if (e.target.classList.contains('knight')) {
-      knight();
+      knight(validIds);
     } else if (e.target.classList.contains('bishop')) {
-      bishop();
+      bishop(validIds);
     } else if (e.target.classList.contains('queen')) {
-      queen();
+      queen(validIds);
     } else {
-      king();
+      kings(validIds);
       if (color === 'white') {
-        castle(85, color);
-        castleQueen(85, color);
+        castle(85, 86, 87, 88, null, color);
+        castle(85, 84, 83, 82, 81, color);
       } else {
-        castle(15, color);
-        castleQueen(15, color);
+        castle(15, 16, 17, 18, null, color);
+        castle(15, 14, 13, 12, 11, color);
       }
     }
   } else {
@@ -57,29 +57,7 @@ function play(e, color, invertedColor) {
 
   currentPiece = currentSquare.children[0];
 
-  validIds.sort();
-  validIds.filter((valid) => {
-    if (
-      valid >= 11 &&
-      valid <= 88 &&
-      valid !== 19 &&
-      valid !== 20 &&
-      valid !== 29 &&
-      valid !== 30 &&
-      valid !== 39 &&
-      valid !== 40 &&
-      valid !== 49 &&
-      valid !== 50 &&
-      valid !== 59 &&
-      valid !== 60 &&
-      valid !== 69 &&
-      valid !== 70 &&
-      valid !== 79 &&
-      valid !== 80
-    ) {
-      newIds.push(valid);
-    }
-  });
+  arrayReduce(validIds, newIds);
 
   newIds.forEach((valid) => {
     validSquares = document.querySelectorAll(`#key-${valid}`);
@@ -91,17 +69,19 @@ function play(e, color, invertedColor) {
       });
     });
   });
+
   allPieces.forEach((pieces) => {
     pieces.addEventListener('click', (e) => {
       kill(e);
     });
   });
 
-  // castleRight(color);
-  // castleLeft(color);
+  // check(blackKing);
 
   newIds = [];
   validIds = [];
+  checkIds = [];
+  newcheckIds = [];
 }
 
 function resetSquares(e) {
@@ -110,10 +90,10 @@ function resetSquares(e) {
       if (
         squares.classList.contains('current') ||
         squares.classList.contains('valid') ||
-        squares.classList.contains('check') ||
-        squares.classList.contains('danger')
+        squares.classList.contains('danger') ||
+        squares.classList.contains('check')
       ) {
-        squares.classList.remove('current', 'danger', 'valid', 'check');
+        squares.classList.remove('current', 'check', 'danger', 'valid');
       }
     }
   });
@@ -137,7 +117,14 @@ function validMoves(invertedColor) {
 
 function movement(e) {
   if (e.target.innerHTML === '' && e.target.classList.contains('valid')) {
+    let newId = e.target.id;
+    newId = newId.slice(-2);
+    newId = newId.substring(0, 1);
+
     e.target.appendChild(currentPiece);
+
+    specialPawn(currentPiece, newId);
+
     currentSquare.innerHTML = '';
 
     switchPlayers();
@@ -146,7 +133,10 @@ function movement(e) {
 }
 
 function kill(e) {
-  if (e.target.parentElement.classList.contains('danger')) {
+  if (
+    e.target.parentElement.classList.contains('danger') ||
+    e.target.parentElement.classList.contains('check')
+  ) {
     killPiece = e.target;
     killSquare = killPiece.parentElement;
 
@@ -156,11 +146,21 @@ function kill(e) {
       } else {
         blackKill.insertBefore(killPiece, blackKill.children[0]);
       }
+      if (killPiece.classList.contains('king')) {
+        gameOver.style = 'display:flex;transform:rotate(180deg);';
+        document.querySelector('#winner-heading').textContent = 'white wins';
+        document.querySelector('#winner-heading').style = 'color:#ddd;';
+      }
     } else {
       if (whiteKill.innerHTML === '') {
         whiteKill.appendChild(killPiece);
       } else {
         whiteKill.insertBefore(killPiece, whiteKill.children[0]);
+      }
+      if (killPiece.classList.contains('king')) {
+        gameOver.style = 'display:flex';
+        document.querySelector('#winner-heading').textContent = 'black wins';
+        document.querySelector('#winner-heading').style = 'color:#333;';
       }
     }
 
@@ -169,21 +169,27 @@ function kill(e) {
     killId = killId.substring(0, 1);
 
     killSquare.appendChild(currentPiece);
+
+    specialPawn(currentPiece, killId);
+
     currentSquare.innerHTML = '';
 
-    if (killSquare.children[0].classList.contains('pawn')) {
-      if (killSquare.children[0].classList.contains('white')) {
-        if (killId === '1') {
-          killSquare.children[0].src =
-            'https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/Chess_qlt45.svg/800px-Chess_qlt45.svg.png';
-          killSquare.children[0].classList = 'chess white queen';
-        }
+    let tieArray = [];
+
+    allSquares.forEach((squares) => {
+      if (squares.innerHTML !== '') {
+        tieArray.push(squares);
+      }
+    });
+
+    console.log(tieArray.length);
+
+    if (tieArray.length === 2) {
+      document.querySelector('#winner-heading').textContent = 'Match Tied';
+      if (currentPiece.classList.contains('white')) {
+        gameOver.style.cssText = 'display:flex;transform:rotate(180deg);';
       } else {
-        if (killId === '8') {
-          killSquare.children[0].src =
-            'https://upload.wikimedia.org/wikipedia/commons/thumb/4/47/Chess_qdt45.svg/800px-Chess_qdt45.svg.png';
-          killSquare.children[0].classList = 'chess black queen';
-        }
+        gameOver.style.cssText = 'display:flex;';
       }
     }
 
@@ -213,115 +219,125 @@ function switchPlayers() {
     outerBoard.classList.remove('rotate-animate');
     outerBoard.classList.add('reverse-rotate-animate');
   }
+
+  // check(blackKing);
+  // check(whiteKing);
 }
 
-function castle(number, color) {
+function specialPawn(currentPiece, newId) {
+  console.log(currentSquare);
+  if (currentPiece.classList.contains('pawn')) {
+    if (currentPiece.classList.contains('white')) {
+      if (newId === '1') {
+        currentPiece.src =
+          'https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/Chess_qlt45.svg/800px-Chess_qlt45.svg.png';
+        currentPiece.classList = 'chess white queen';
+      }
+    } else {
+      if (newId === '8') {
+        currentPiece.src =
+          'https://upload.wikimedia.org/wikipedia/commons/thumb/4/47/Chess_qdt45.svg/800px-Chess_qdt45.svg.png';
+        currentPiece.classList = 'chess black queen';
+      }
+    }
+  }
+}
+
+function castle(number, number2, number3, number4, number5, color) {
   if (current === number) {
     let firstSquare = document.querySelector(`#key-${number}`);
-    let secondSquare = document.querySelector(`#key-${number + 1}`);
-    let thirdSquare = document.querySelector(`#key-${number + 2}`);
-    let fourthSquare = document.querySelector(`#key-${number + 3}`);
+    let secondSquare = document.querySelector(`#key-${number2}`);
+    let thirdSquare = document.querySelector(`#key-${number3}`);
+    let fourthSquare = document.querySelector(`#key-${number4}`);
+    let fifthSquare;
+    if (number5 !== null) {
+      fifthSquare = document.querySelector(`#key-${number5}`);
+    }
 
     if (
       firstSquare.innerHTML !== '' &&
       firstSquare.children[0].classList.contains('king') &&
       firstSquare.children[0].classList.contains(color) &&
       secondSquare.innerHTML === '' &&
-      thirdSquare.innerHTML === '' &&
-      fourthSquare.innerHTML !== '' &&
-      fourthSquare.children[0].classList.contains('rook') &&
-      fourthSquare.children[0].classList.contains(color)
+      thirdSquare.innerHTML === ''
     ) {
-      fourthSquare.classList.toggle('valid');
-    }
-    allPieces.forEach((pieces) => {
-      if (
-        pieces.parentElement.classList.contains('valid') &&
-        pieces.classList.contains(color)
-      ) {
-        if (color === 'white') {
-          pieces.removeEventListener('click', whiteMain);
-        } else {
-          pieces.removeEventListener('click', blackMain);
+      if (fifthSquare === undefined) {
+        if (
+          fourthSquare.innerHTML !== '' &&
+          fourthSquare.children[0].classList.contains('rook') &&
+          fourthSquare.children[0].classList.contains(color)
+        ) {
+          fourthSquare.classList.toggle('valid');
         }
-        pieces.addEventListener('click', (e) => {
-          if (
-            e.target.classList.contains(color) &&
-            e.target.parentElement.classList.contains('valid')
-          ) {
-            thirdSquare.appendChild(firstSquare.children[0]);
+      } else {
+        if (
+          fourthSquare.innerHTML === '' &&
+          fifthSquare.innerHTML !== '' &&
+          fifthSquare.children[0].classList.contains('rook') &&
+          fifthSquare.children[0].classList.contains(color)
+        ) {
+          fifthSquare.classList.toggle('valid');
+        }
+      }
+    }
+    castleMove(
+      color,
+      firstSquare,
+      secondSquare,
+      thirdSquare,
+      fourthSquare,
+      fifthSquare
+    );
+  }
+}
+
+function castleMove(
+  color,
+  firstSquare,
+  secondSquare,
+  thirdSquare,
+  fourthSquare,
+  fifthSquare
+) {
+  allPieces.forEach((pieces) => {
+    if (
+      pieces.parentElement.classList.contains('valid') &&
+      pieces.classList.contains(color)
+    ) {
+      if (color === 'white') {
+        pieces.removeEventListener('click', whiteMain);
+      } else {
+        pieces.removeEventListener('click', blackMain);
+      }
+      pieces.addEventListener('click', (e) => {
+        if (
+          e.target.classList.contains(color) &&
+          e.target.parentElement.classList.contains('valid')
+        ) {
+          if (fifthSquare === undefined) {
             secondSquare.appendChild(fourthSquare.children[0]);
-            firstSquare.innerHTML = '';
-            fourthSquare.innerHTML = '';
-
-            switchPlayers(e);
-
-            resetSquares(e);
-          }
-        });
-        if (color === 'white') {
-          pieces.addEventListener('click', whiteMain);
-        } else {
-          pieces.addEventListener('click', blackMain);
-        }
-      }
-    });
-  }
-}
-
-function castleQueen(number, color) {
-  if (current === number) {
-    let firstSquare = document.querySelector(`#key-${number}`);
-    let secondSquare = document.querySelector(`#key-${number - 1}`);
-    let thirdSquare = document.querySelector(`#key-${number - 2}`);
-    let fourthSquare = document.querySelector(`#key-${number - 3}`);
-    let fifthSquare = document.querySelector(`#key-${number - 4}`);
-
-    if (
-      firstSquare.innerHTML !== '' &&
-      firstSquare.children[0].classList.contains('king') &&
-      firstSquare.children[0].classList.contains(color) &&
-      secondSquare.innerHTML === '' &&
-      thirdSquare.innerHTML === '' &&
-      fourthSquare.innerHTML === '' &&
-      fifthSquare.innerHTML !== '' &&
-      fifthSquare.children[0].classList.contains('rook') &&
-      fifthSquare.children[0].classList.contains(color)
-    ) {
-      fifthSquare.classList.toggle('valid');
-    }
-    allPieces.forEach((pieces) => {
-      if (
-        pieces.parentElement.classList.contains('valid') &&
-        pieces.classList.contains(color)
-      ) {
-        if (color === 'white') {
-          pieces.removeEventListener('click', whiteMain);
-        } else {
-          pieces.removeEventListener('click', blackMain);
-        }
-        pieces.addEventListener('click', (e) => {
-          if (
-            e.target.classList.contains(color) &&
-            e.target.parentElement.classList.contains('valid')
-          ) {
-            thirdSquare.appendChild(firstSquare.children[0]);
+          } else {
             secondSquare.appendChild(fifthSquare.children[0]);
-            firstSquare.innerHTML = '';
-            fourthSquare.innerHTML = '';
             fifthSquare.innerHTML = '';
-
-            switchPlayers(e);
-
-            resetSquares(e);
           }
-        });
-        if (color === 'white') {
-          pieces.addEventListener('click', whiteMain);
-        } else {
-          pieces.addEventListener('click', blackMain);
+          thirdSquare.appendChild(firstSquare.children[0]);
+          firstSquare.innerHTML = '';
+          fourthSquare.innerHTML = '';
+
+          switchPlayers(e);
+
+          resetSquares(e);
         }
+      });
+      if (color === 'white') {
+        pieces.addEventListener('click', whiteMain);
+      } else {
+        pieces.addEventListener('click', blackMain);
       }
-    });
-  }
+    }
+  });
 }
+
+document.querySelector('#play-again').addEventListener('click', () => {
+  window.location.reload();
+});

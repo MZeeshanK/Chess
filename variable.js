@@ -1,10 +1,15 @@
 const whiteKill = document.querySelector('.white-kill'),
-  blackKill = document.querySelector('.black-kill');
+  blackKill = document.querySelector('.black-kill'),
+  whiteKing = document.querySelector('.king.white'),
+  blackKing = document.querySelector('.king.black'),
+  gameOver = document.querySelector('.game-over');
 
 let allSquares = document.querySelectorAll('.squares'),
   allPieces = document.querySelectorAll('.chess'),
   validIds = [],
   newIds = [],
+  checkIds = [],
+  newcheckIds = [],
   x,
   y,
   a,
@@ -24,4 +29,5 @@ let currentSquare,
   secondSquare,
   thirdSquare,
   fourthSquare,
-  fifthSquare;
+  fifthSquare,
+  checkSquare;

@@ -7,8 +7,12 @@
 body {
   background-color: #111;
   display: flex;
+  align-items: center;
   justify-content: center;
+  height: 100vh;
   overflow: hidden;
+  font-family: monospace;
+  flex-direction: column;
 }
 
 .board {
@@ -20,6 +24,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-around;
+  position: relative;
 }
 
 .white-kill,
@@ -48,6 +53,73 @@ body {
   position: relative;
   isolation: isolate;
 }
+
+.game-over {
+  background: rgba(0, 0, 0, 0.5);
+  height: inherit;
+  width: inherit;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  z-index: 10;
+  top: 0;
+  left: 0;
+  border-radius: inherit;
+}
+
+.inner-game-over {
+  height: 95%;
+  aspect-ratio: 1;
+  border-radius: inherit;
+  border: 10px solid #674510;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+.winner {
+  height: fit-content;
+  width: 100%;
+  color: #b98531;
+  display: flex;
+  flex-direction: column;
+  text-transform: uppercase;
+  align-items: center;
+  justify-content: space-between;
+  background: url('img/dark-wood.jpg');
+  border-radius: inherit;
+  padding-bottom: 10px;
+}
+
+.winner #heading {
+  font-size: 4rem;
+  text-shadow: 0.6rem 0.3rem 1rem #674510;
+  margin-bottom: 1rem;
+}
+
+.winner #winner-heading {
+  font-size: 25px;
+  font-weight: bolder;
+  text-shadow: 0.1rem 0.1rem 1rem #fff;
+}
+
+#play-again {
+  background: url('img/dark-wood.jpg');
+  padding: 1rem 3rem;
+  color: #b98531;
+  font-weight: bolder;
+  font-size: 20px;
+  text-transform: uppercase;
+  text-shadow: 0.6rem 0.3rem 0.4rem #000;
+  border-radius: inherit;
+  box-shadow: 0.2rem 0.2rem 0.3rem 0.1rem #b98531,
+    -0.2rem 0.2rem 0.3rem 0.1rem #b98531, 0.2rem -0.2rem 0.3rem 0.1rem #b98531,
+    -0.2rem -0.2rem 0.3rem 0.1rem #b98531;
+  border: none;
+}
+
 img {
   isolation: isolate;
 }
@@ -154,7 +226,19 @@ img.pawn {
   opacity: 0.8;
 }
 
-@media only screen and (max-width: 700px) {
+#footer {
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#footer p {
+  font-size: 1rem;
+  margin-bottom: 1rem;
+}
+
+@media only screen and (max-width: 500px) {
   .board {
     height: 100vh;
     margin-top: 0;
