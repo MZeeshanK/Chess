@@ -17,7 +17,6 @@ body {
 
 .board {
   height: 95vh;
-  margin-top: 2.5vh;
   width: 75vw;
   background: url('img/dark-wood.jpg');
   border-radius: 1vw;
@@ -124,14 +123,9 @@ img {
   isolation: isolate;
 }
 
-img.black {
-  filter: drop-shadow(0px 1px #fff) drop-shadow(-1px 0px #fff)
-    drop-shadow(1px 0px #fff) drop-shadow(0px -1px #fff);
-  height: 100%;
-  width: 100%;
-}
-
+img.black,
 img.white {
+  filter: drop-shadow(0px 0px 4px #fff);
   height: 100%;
   width: 100%;
 }
@@ -170,8 +164,24 @@ img.pawn {
   background: url('img/dark-wood-90.jpg') no-repeat center center / cover;
 }
 
+.squares:nth-child(odd) > img {
+  filter: drop-shadow(0 0 7px #fff);
+}
+
+.squares:nth-child(odd) .active {
+  animation: glow 3.2s linear infinite;
+}
+
+.squares:nth-child(even) .active {
+  animation: darkGlow 3.2s linear infinite;
+}
+
 .squares:nth-child(even) {
   background: url('img/light-wood.jpg') no-repeat center center / cover;
+}
+
+.squares:nth-child(even) > img {
+  filter: drop-shadow(0 0 7px #000);
 }
 
 .squares:nth-child(odd):hover {
@@ -228,6 +238,7 @@ img.pawn {
 
 #footer {
   color: #fff;
+  height: 5vh;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -235,29 +246,6 @@ img.pawn {
 
 #footer p {
   font-size: 1rem;
-  margin-bottom: 1rem;
-}
-
-@media only screen and (max-width: 500px) {
-  .board {
-    height: 100vh;
-    margin-top: 0;
-    width: 100vw;
-    background: url('img/dark-wood-90.jpg');
-    flex-direction: column;
-  }
-
-  .white-kill,
-  .black-kill {
-    height: 25%;
-    width: 100%;
-    flex-direction: row;
-  }
-
-  .inner-board {
-    width: 95vw;
-    aspect-ratio: 1;
-  }
 }
 
 .rotate {
@@ -284,5 +272,49 @@ img.pawn {
   }
   100% {
     transform: rotate(360deg);
+  }
+}
+
+@keyframes glow {
+  50% {
+    background: rgba(255, 255, 255, 0.094);
+  }
+  100% {
+    background: transparent;
+  }
+}
+
+@keyframes darkGlow {
+  50% {
+    background: rgba(0, 0, 0, 0.204);
+  }
+  100% {
+    background: transparent;
+  }
+}
+
+@media only screen and (max-width: 500px) {
+  .board {
+    height: 95vh;
+    margin-top: 0;
+    width: 100vw;
+    background: url('img/dark-wood-90.jpg');
+    flex-direction: column;
+  }
+
+  .white-kill,
+  .black-kill {
+    height: 25%;
+    width: 100%;
+    flex-direction: row;
+  }
+
+  .inner-board {
+    width: 95vw;
+    aspect-ratio: 1;
+  }
+
+  #footer p {
+    font-size: 0.65rem;
   }
 }

@@ -1,5 +1,6 @@
 allPieces.forEach((pieces) => {
   if (pieces.classList.contains('white')) {
+    pieces.classList.add('active');
     pieces.addEventListener('click', whiteMain);
   }
 });
@@ -76,8 +77,6 @@ function play(e, color, invertedColor) {
     });
   });
 
-  // check(blackKing);
-
   newIds = [];
   validIds = [];
   checkIds = [];
@@ -90,10 +89,12 @@ function resetSquares(e) {
       if (
         squares.classList.contains('current') ||
         squares.classList.contains('valid') ||
-        squares.classList.contains('danger') ||
-        squares.classList.contains('check')
+        squares.classList.contains('danger')
       ) {
-        squares.classList.remove('current', 'check', 'danger', 'valid');
+        squares.classList.remove('current', 'danger', 'valid');
+      }
+      if (squares.classList.contains('check') && squares.innerHTML === '') {
+        squares.classList.remove('check');
       }
     }
   });
@@ -105,11 +106,7 @@ function validMoves(invertedColor) {
     if (squares.hasChildNodes()) {
       squares.classList.remove('valid');
       if (squares.children[0].classList.contains(invertedColor)) {
-        if (squares.children[0].classList.contains('king')) {
-          squares.classList.toggle('check');
-        } else {
-          squares.classList.toggle('danger');
-        }
+        squares.classList.toggle('danger');
       }
     }
   });
@@ -133,10 +130,7 @@ function movement(e) {
 }
 
 function kill(e) {
-  if (
-    e.target.parentElement.classList.contains('danger') ||
-    e.target.parentElement.classList.contains('check')
-  ) {
+  if (e.target.parentElement.classList.contains('danger')) {
     killPiece = e.target;
     killSquare = killPiece.parentElement;
 
@@ -182,8 +176,6 @@ function kill(e) {
       }
     });
 
-    console.log(tieArray.length);
-
     if (tieArray.length === 2) {
       document.querySelector('#winner-heading').textContent = 'Match Tied';
       if (currentPiece.classList.contains('white')) {
@@ -200,32 +192,66 @@ function kill(e) {
 }
 
 function switchPlayers() {
+  let color;
   if (currentPiece.classList.contains('white')) {
+    color = 'white';
+  } else {
+    color = 'black';
+  }
+  whiteKing.parentElement.classList.remove('check');
+  blackKing.parentElement.classList.remove('check');
+  allPieces.forEach((pieces) => {
+    if (color === 'white') {
+      if (pieces.classList.contains('black')) {
+        pieces.classList.add('active');
+      } else {
+        pieces.classList.remove('active');
+      }
+    } else {
+      if (pieces.classList.contains('white')) {
+        pieces.classList.add('active');
+      } else {
+        pieces.classList.remove('active');
+      }
+    }
+  });
+
+  if (color === 'white') {
     allPieces.forEach((pieces) => {
       pieces.removeEventListener('click', whiteMain);
       pieces.addEventListener('click', blackMain);
-      pieces.classList.add('rotate');
+      if (!window.matchMedia('(max-width: 500px)').matches) {
+        pieces.classList.add('rotate');
+      }
     });
 
-    outerBoard.classList.remove('reverse-rotate-animate');
-    outerBoard.classList.add('rotate-animate');
+    if (!window.matchMedia('(max-width: 500px)').matches) {
+      outerBoard.classList.remove('reverse-rotate-animate');
+      outerBoard.classList.add('rotate-animate');
+    }
   } else {
     allPieces.forEach((pieces) => {
       pieces.removeEventListener('click', blackMain);
       pieces.addEventListener('click', whiteMain);
-      pieces.classList.remove('rotate');
+      if (!window.matchMedia('(max-width: 500px)').matches) {
+        pieces.classList.remove('rotate');
+      }
     });
 
-    outerBoard.classList.remove('rotate-animate');
-    outerBoard.classList.add('reverse-rotate-animate');
+    if (!window.matchMedia('(max-width: 500px)').matches) {
+      outerBoard.classList.remove('rotate-animate');
+      outerBoard.classList.add('reverse-rotate-animate');
+    }
   }
 
-  // check(blackKing);
-  // check(whiteKing);
+  if (color === 'white') {
+  } else {
+  }
+  check(blackKing);
+  check(whiteKing);
 }
 
 function specialPawn(currentPiece, newId) {
-  console.log(currentSquare);
   if (currentPiece.classList.contains('pawn')) {
     if (currentPiece.classList.contains('white')) {
       if (newId === '1') {

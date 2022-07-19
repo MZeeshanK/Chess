@@ -282,7 +282,9 @@ function arrayReduce(array, newArray) {
       valid !== 79 &&
       valid !== 80
     ) {
-      newArray.push(valid);
+      if (!newArray.includes(valid)) {
+        newArray.push(valid);
+      }
     }
   });
 }
@@ -291,11 +293,13 @@ function arrayReduce(array, newArray) {
 
 function check(king) {
   let ID = king.parentElement.id;
-  let color;
+
   if (king.classList.contains('white')) {
     color = 'white';
+    invertedColor = 'black';
   } else {
     color = 'black';
+    invertedColor = 'white';
   }
 
   ID = ID.slice(-2);
@@ -304,53 +308,57 @@ function check(king) {
 
   current = Number(ID);
 
-  checkRook(king, color, 'pawn');
-  checkRook(king, color, 'rook');
-  checkRook(king, color, 'knight');
-  checkRook(king, color, 'bishop');
-  checkRook(king, color, 'queen');
-  checkRook(king, color, 'king');
+  checker(king, color, 'pawn');
+  checker(king, color, 'rook');
+  checker(king, color, 'knight');
+  checker(king, color, 'bishop');
+  checker(king, color, 'queen');
 }
 
-function checkRook(king, color, piece) {
-  if (piece === 'rook') {
-    rook(checkIds);
-    checkCheck(king, color, 'rook');
-  } else if (piece === 'knight') {
-    knight(checkIds);
-    checkCheck(king, color, 'knight');
-  } else if (piece === 'bishop') {
-    bishop(checkIds);
-    checkCheck(king, color, 'bishop');
-  } else if (piece === 'queen') {
-    queen(checkIds);
-    checkCheck(king, color, 'queen');
-  } else if (piece === 'king') {
-    kings(checkIds);
-    checkCheck(king, color, 'king');
-  } else if (piece === 'pawn') {
-    if (color === 'white') {
-      blackPawnKill(checkIds);
-      checkCheck(king, color, 'pawn');
-    } else {
-      whitePawnKill(checkIds);
-      checkCheck(king, color, 'pawn');
+function checker(king, color, piece) {
+  resetArrays();
+  if (king.classList.contains(color)) {
+    if (piece === 'pawn') {
+      if (color === 'white') {
+        a = 10 * (x - 1) + y - 1;
+        b = 10 * (x - 1) + y + 1;
+
+        checkIds.push(a, b);
+      } else {
+        a = 10 * (x + 1) + y - 1;
+        b = 10 * (x + 1) + y + 1;
+
+        checkIds.push(a, b);
+      }
+    } else if (piece === 'rook') {
+      rook(checkIds);
+    } else if (piece === 'bishop') {
+      bishop(checkIds);
+    } else if (piece === 'knight') {
+      knight(checkIds);
+    } else if (piece === 'queen') {
+      queen(checkIds);
     }
+    addCheck(king, color, piece);
   }
 }
 
-function checkCheck(king, color, piece) {
-  arrayReduce(checkIds, newcheckIds);
-  console.log(newcheckIds);
+function resetArrays() {
+  checkIds = [];
+  newCheckIds = [];
+}
 
-  newcheckIds.forEach((check) => {
-    checkSquares = document.querySelectorAll(`#key-${check}`);
+function addCheck(king, color, piece) {
+  arrayReduce(checkIds, newCheckIds);
 
-    checkSquares.forEach((check) => {
-      if (check.innerHTML !== '') {
+  newCheckIds.forEach((check) => {
+    let checkSquares = document.querySelectorAll(`#key-${check}`);
+
+    checkSquares.forEach((squares) => {
+      if (squares.innerHTML !== '') {
         if (
-          check.children[0].classList.contains(piece) &&
-          !check.children[0].classList.contains(color)
+          !squares.children[0].classList.contains(color) &&
+          squares.children[0].classList.contains(piece)
         ) {
           king.parentElement.classList.add('check');
         }
