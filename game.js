@@ -177,6 +177,8 @@ function kill(e) {
       activate.style.setProperty('--rotate', '0deg');
     }
 
+    killPiece.style.setProperty('position', 'relative');
+
     if (currentPiece.classList.contains('white')) {
       if (blackKill.innerHTML === '') {
         blackKill.appendChild(killPiece);

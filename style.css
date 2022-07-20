@@ -135,7 +135,7 @@ img.black,
 img.white {
   filter: drop-shadow(0px 0px 4px #fff);
   height: 100%;
-  width: 100%;
+  aspect-ratio: 1;
 }
 
 img.pawn {
@@ -144,8 +144,8 @@ img.pawn {
 
 .white-kill > img,
 .black-kill > img {
-  height: 4rem;
-  width: 4rem;
+  height: calc(90.25vh / 8);
+  aspect-ratio: 1;
 }
 .row {
   height: calc(100% / 8);
