@@ -120,7 +120,15 @@ body {
 }
 
 img {
-  isolation: isolate;
+  /* isolation: isolate; */
+  position: absolute;
+  z-index: 1000;
+}
+
+@keyframes anything {
+  100% {
+    transform: translate(0, 200%);
+  }
 }
 
 img.black,
@@ -136,8 +144,8 @@ img.pawn {
 
 .white-kill > img,
 .black-kill > img {
-  height: 65px;
-  width: 65px;
+  height: 4rem;
+  width: 4rem;
 }
 .row {
   height: calc(100% / 8);
@@ -155,9 +163,10 @@ img.pawn {
   display: flex;
   align-items: center;
   justify-content: center;
-  isolation: isolate;
+  /* isolation: isolate; */
   color: white;
   position: relative;
+  /* z-index: 10; */
 }
 
 .squares:nth-child(odd) {
@@ -253,11 +262,11 @@ img.pawn {
 }
 
 .rotate-animate {
-  animation: rotate 0.8s linear forwards;
+  animation: rotate 0.6s linear forwards;
 }
 
 .reverse-rotate-animate {
-  animation: reverseRotate 0.8s linear forwards;
+  animation: reverseRotate 0.6s linear forwards;
 }
 
 @keyframes rotate {
@@ -290,6 +299,16 @@ img.pawn {
   }
   100% {
     background: transparent;
+  }
+}
+
+.activate {
+  animation: anything var(--z) ease-in-out forwards;
+}
+
+@keyframes anything {
+  100% {
+    transform: translate(var(--y), var(--x)) rotate(var(--rotate));
   }
 }
 

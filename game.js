@@ -116,15 +116,36 @@ function movement(e) {
   if (e.target.innerHTML === '' && e.target.classList.contains('valid')) {
     let newId = e.target.id;
     newId = newId.slice(-2);
+    let newY = Number(newId.substring(1, 2));
+
     newId = newId.substring(0, 1);
 
-    e.target.appendChild(currentPiece);
+    let newX = Number(newId);
+
+    let z = Math.max(Math.abs(x - newX), Math.abs(y - newY)) / 4;
+
+    currentPiece.classList.add('activate');
+    const activate = document.querySelector('.activate');
+
+    activate.style.setProperty('--x', `${-1 * (x - newX) * 100}%`);
+    activate.style.setProperty('--y', `${-1 * (y - newY) * 100}%`);
+    activate.style.setProperty('--z', `${z}s`);
+
+    if (currentPiece.classList.contains('black')) {
+      activate.style.setProperty('--rotate', '180deg');
+    } else {
+      activate.style.setProperty('--rotate', '0deg');
+    }
+
+    setTimeout(() => {
+      currentPiece.classList.remove('activate');
+      e.target.appendChild(currentPiece);
+      currentSquare.innerHTML = '';
+    }, z * 1.2 * 1000);
+
+    switchPlayers(z * 1.2);
 
     specialPawn(currentPiece, newId);
-
-    currentSquare.innerHTML = '';
-
-    switchPlayers();
     resetSquares(e);
   }
 }
@@ -134,6 +155,28 @@ function kill(e) {
     killPiece = e.target;
     killSquare = killPiece.parentElement;
 
+    let killId = killSquare.id;
+    killId = killId.slice(-2);
+    let newY = Number(killId.substring(1, 2));
+    killId = killId.substring(0, 1);
+    let newX = Number(killId);
+
+    let z = Math.max(Math.abs(x - newX), Math.abs(y - newY)) / 4;
+    let w;
+
+    currentPiece.classList.add('activate');
+    const activate = document.querySelector('.activate');
+
+    activate.style.setProperty('--x', `${-1 * (x - newX) * 100}%`);
+    activate.style.setProperty('--y', `${-1 * (y - newY) * 100}%`);
+    activate.style.setProperty('--z', `${z}s`);
+
+    if (currentPiece.classList.contains('black')) {
+      activate.style.setProperty('--rotate', '180deg');
+    } else {
+      activate.style.setProperty('--rotate', '0deg');
+    }
+
     if (currentPiece.classList.contains('white')) {
       if (blackKill.innerHTML === '') {
         blackKill.appendChild(killPiece);
@@ -141,9 +184,11 @@ function kill(e) {
         blackKill.insertBefore(killPiece, blackKill.children[0]);
       }
       if (killPiece.classList.contains('king')) {
-        gameOver.style = 'display:flex;transform:rotate(180deg);';
-        document.querySelector('#winner-heading').textContent = 'white wins';
-        document.querySelector('#winner-heading').style = 'color:#ddd;';
+        setTimeout(() => {
+          gameOver.style = 'display:flex;';
+          document.querySelector('#winner-heading').textContent = 'white wins';
+          document.querySelector('#winner-heading').style = 'color:#ddd;';
+        }, 1000);
       }
     } else {
       if (whiteKill.innerHTML === '') {
@@ -152,22 +197,21 @@ function kill(e) {
         whiteKill.insertBefore(killPiece, whiteKill.children[0]);
       }
       if (killPiece.classList.contains('king')) {
-        gameOver.style = 'display:flex';
-        document.querySelector('#winner-heading').textContent = 'black wins';
-        document.querySelector('#winner-heading').style = 'color:#333;';
+        setTimeout(() => {
+          gameOver.style = 'display:flex';
+          document.querySelector('#winner-heading').textContent = 'black wins';
+          document.querySelector('#winner-heading').style = 'color:#333;';
+        }, 3000);
       }
     }
 
-    let killId = killSquare.id;
-    killId = killId.slice(-2);
-    killId = killId.substring(0, 1);
-
-    killSquare.appendChild(currentPiece);
+    setTimeout(() => {
+      currentPiece.classList.remove('activate');
+      killSquare.appendChild(currentPiece);
+      currentSquare.innerHTML = '';
+    }, z * 1.2 * 1000);
 
     specialPawn(currentPiece, killId);
-
-    currentSquare.innerHTML = '';
-
     let tieArray = [];
 
     allSquares.forEach((squares) => {
@@ -185,21 +229,23 @@ function kill(e) {
       }
     }
 
-    switchPlayers();
+    switchPlayers(z * 1.2);
 
     resetSquares(e);
   }
 }
 
-function switchPlayers() {
+function switchPlayers(z) {
   let color;
   if (currentPiece.classList.contains('white')) {
     color = 'white';
   } else {
     color = 'black';
   }
+
   whiteKing.parentElement.classList.remove('check');
   blackKing.parentElement.classList.remove('check');
+
   allPieces.forEach((pieces) => {
     if (color === 'white') {
       if (pieces.classList.contains('black')) {
@@ -216,39 +262,37 @@ function switchPlayers() {
     }
   });
 
-  if (color === 'white') {
-    allPieces.forEach((pieces) => {
-      pieces.removeEventListener('click', whiteMain);
-      pieces.addEventListener('click', blackMain);
+  setTimeout(() => {
+    check(blackKing);
+    check(whiteKing);
+    if (color === 'white') {
+      allPieces.forEach((pieces) => {
+        pieces.removeEventListener('click', whiteMain);
+        pieces.addEventListener('click', blackMain);
+        if (!window.matchMedia('(max-width: 500px)').matches) {
+          pieces.classList.add('rotate');
+        }
+      });
+
       if (!window.matchMedia('(max-width: 500px)').matches) {
-        pieces.classList.add('rotate');
+        outerBoard.classList.remove('reverse-rotate-animate');
+        outerBoard.classList.add('rotate-animate');
       }
-    });
+    } else {
+      allPieces.forEach((pieces) => {
+        pieces.removeEventListener('click', blackMain);
+        pieces.addEventListener('click', whiteMain);
+        if (!window.matchMedia('(max-width: 500px)').matches) {
+          pieces.classList.remove('rotate');
+        }
+      });
 
-    if (!window.matchMedia('(max-width: 500px)').matches) {
-      outerBoard.classList.remove('reverse-rotate-animate');
-      outerBoard.classList.add('rotate-animate');
-    }
-  } else {
-    allPieces.forEach((pieces) => {
-      pieces.removeEventListener('click', blackMain);
-      pieces.addEventListener('click', whiteMain);
       if (!window.matchMedia('(max-width: 500px)').matches) {
-        pieces.classList.remove('rotate');
+        outerBoard.classList.remove('rotate-animate');
+        outerBoard.classList.add('reverse-rotate-animate');
       }
-    });
-
-    if (!window.matchMedia('(max-width: 500px)').matches) {
-      outerBoard.classList.remove('rotate-animate');
-      outerBoard.classList.add('reverse-rotate-animate');
     }
-  }
-
-  if (color === 'white') {
-  } else {
-  }
-  check(blackKing);
-  check(whiteKing);
+  }, z * 1.2 * 1000);
 }
 
 function specialPawn(currentPiece, newId) {

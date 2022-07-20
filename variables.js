@@ -29,4 +29,5 @@ let currentSquare,
   secondSquare,
   thirdSquare,
   fourthSquare,
-  fifthSquare;
+  fifthSquare,
+  dangerPiece;
