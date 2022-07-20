@@ -328,6 +328,12 @@ img.pawn {
     flex-direction: row;
   }
 
+  .white-kill > img,
+  .black-kill > img {
+    height: 2.5rem;
+    width: 2.5rem;
+  }
+
   .inner-board {
     width: 95vw;
     aspect-ratio: 1;
@@ -335,5 +341,11 @@ img.pawn {
 
   #footer p {
     font-size: 0.65rem;
+  }
+
+  @keyframes anything {
+    100% {
+      transform: translate(var(--y), var(--x));
+    }
   }
 }

@@ -201,7 +201,7 @@ function kill(e) {
           gameOver.style = 'display:flex';
           document.querySelector('#winner-heading').textContent = 'black wins';
           document.querySelector('#winner-heading').style = 'color:#333;';
-        }, 3000);
+        }, 1000);
       }
     }
 
@@ -223,7 +223,7 @@ function kill(e) {
     if (tieArray.length === 2) {
       document.querySelector('#winner-heading').textContent = 'Match Tied';
       if (currentPiece.classList.contains('white')) {
-        gameOver.style.cssText = 'display:flex;transform:rotate(180deg);';
+        gameOver.style.cssText = 'display:flex;';
       } else {
         gameOver.style.cssText = 'display:flex;';
       }
