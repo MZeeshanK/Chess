@@ -144,8 +144,8 @@ img.pawn {
 
 .white-kill > img,
 .black-kill > img {
-  height: calc(90.25vh / 8);
-  aspect-ratio: 1;
+  height: 60px;
+  width: 60px;
 }
 .row {
   height: calc(100% / 8);
@@ -330,8 +330,8 @@ img.pawn {
 
   .white-kill > img,
   .black-kill > img {
-    height: 2.5em;
-    width: 2.5em;
+    height: 35px;
+    width: 35px;
   }
 
   .inner-board {
