@@ -1,97 +1,117 @@
-export interface Square {
-  pos: number;
-  value?: "rook" | "knight" | "bishop" | "queen" | "king" | "pawn" | "";
-  color?: "w" | "b" | "";
-  current: boolean;
-  valid: boolean;
-  empty: boolean;
-}
+import { Square } from "../types";
 
-const initialState: Square[] = [];
+const initialState: Square[][] = [];
 
-for (let i: number = 1; i <= 8; i++) {
-  for (let j: number = 1; j <= 8; j++) {
-    switch (i) {
-      case 1:
-      case 8:
+for (let i: number = 0; i <= 7; i++) {
+  const arr: Square[] = [];
+
+  switch (i) {
+    case 0:
+    case 7:
+      for (let j: number = 0; j <= 7; j++) {
         switch (j) {
-          case 1:
-          case 8:
-            initialState.push({
-              pos: i * 10 + j,
-              value: "rook",
-              color: i === 1 ? "b" : "w",
-              current: false,
-              valid: false,
-              empty: false,
-            });
-            break;
-          case 2:
+          case 0:
           case 7:
-            initialState.push({
-              pos: i * 10 + j,
-              value: "knight",
-              color: i === 1 ? "b" : "w",
+            arr.push({
+              row: i,
+              col: j,
+              value: "rook",
+              color: i === 0 ? "b" : "w",
               current: false,
               valid: false,
               empty: false,
+              kill: false,
             });
             break;
-          case 3:
+
+          case 1:
           case 6:
-            initialState.push({
-              pos: i * 10 + j,
-              value: "bishop",
-              color: i === 1 ? "b" : "w",
+            arr.push({
+              row: i,
+              col: j,
+              value: "knight",
+              color: i === 0 ? "b" : "w",
               current: false,
               valid: false,
               empty: false,
+              kill: false,
             });
             break;
-          case 4:
-            initialState.push({
-              pos: i * 10 + j,
-              value: "queen",
-              color: i === 1 ? "b" : "w",
-              current: false,
-              valid: false,
-              empty: false,
-            });
-            break;
+
+          case 2:
           case 5:
-            initialState.push({
-              pos: i * 10 + j,
-              value: "king",
-              color: i === 1 ? "b" : "w",
+            arr.push({
+              row: i,
+              col: j,
+              value: "bishop",
+              color: i === 0 ? "b" : "w",
               current: false,
               valid: false,
               empty: false,
+              kill: false,
             });
             break;
-          default:
+
+          case 3:
+            arr.push({
+              row: i,
+              col: j,
+              value: "queen",
+              color: i === 0 ? "b" : "w",
+              current: false,
+              valid: false,
+              empty: false,
+              kill: false,
+            });
+            break;
+
+          case 4:
+            arr.push({
+              row: i,
+              col: j,
+              value: "king",
+              color: i === 0 ? "b" : "w",
+              current: false,
+              valid: false,
+              empty: false,
+              kill: false,
+            });
             break;
         }
-        break;
-      case 2:
-      case 7:
-        initialState.push({
-          pos: i * 10 + j,
+      }
+      break;
+    case 1:
+    case 6:
+      for (let j: number = 0; j <= 7; j++) {
+        arr.push({
+          row: i,
+          col: j,
           value: "pawn",
-          color: i === 2 ? "b" : "w",
+          color: i === 1 ? "b" : "w",
           current: false,
           valid: false,
           empty: false,
+          kill: false,
         });
-        break;
-      default:
-        initialState.push({
-          pos: i * 10 + j,
+      }
+      break;
+    case 2:
+    case 3:
+    case 4:
+    case 5:
+      for (let j: number = 0; j <= 7; j++) {
+        arr.push({
+          row: i,
+          col: j,
           current: false,
           valid: false,
           empty: true,
+          kill: false,
         });
-    }
+      }
+      break;
   }
+  initialState.push(arr);
 }
 
 export default initialState;

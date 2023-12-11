@@ -1,27 +1,24 @@
-import { useAppDispatch } from "../store/store";
+import { useAppDispatch, useAppSelector } from "../store/store";
 import { movePiece, toggleCurrent } from "../store/square";
+import { Square } from "../types";
 
 type Props = {
-  key: number;
-  value: "king" | "queen" | "bishop" | "rook" | "knight" | "pawn" | "";
-  color: "w" | "b" | "";
-  pos: number;
-  current: boolean;
-  valid: boolean;
-  empty: boolean;
+  square: Square;
 };
 
-const Piece = ({ value, pos, color, current, valid, empty }: Props) => {
-  const row: number = Math.floor(pos / 10);
-  const col: number = pos % 10;
-
+const Piece = ({ square }: Props) => {
   const dispatch = useAppDispatch();
+
+  const { turn } = useAppSelector((state) => state.square);
+
+  const { row, col, value, color, current, valid, kill, empty } = square;
 
   return (
     <div
       onClick={() => {
-        if (valid) dispatch(movePiece(pos));
-        else dispatch(toggleCurrent(pos));
+        if (valid || kill) dispatch(movePiece({ row, col }));
+        else if ((!valid && empty) || color !== turn) return;
+        else dispatch(toggleCurrent({ row, col }));
       }}
       style={{
         background:
@@ -29,15 +26,17 @@ const Piece = ({ value, pos, color, current, valid, empty }: Props) => {
             ? "url(/src/assets/white-square.png)"
             : "url(/src/assets/black-square.png)",
       }}
-      className={`h-[100%] aspect-square flex items-center justify-center relative ${
+      className={`h-full aspect-square flex items-center justify-center relative ${
         current ? "overlay" : ""
-      } ${valid ? "valid" : ""}`}
+      } ${valid ? "valid" : ""}
+      ${kill ? "kill" : ""}
+      `}
     >
       {!empty && (
         <img
           className="absolute z-10"
           src={`/src/assets/${value}-${color}.png`}
-          alt=""
+          alt="loading"
         />
       )}
     </div>

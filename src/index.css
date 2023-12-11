@@ -9,8 +9,8 @@
 }
 
 body {
-  background-color: #000;
-  color: white;
+  background: linear-gradient(105deg, #111, #333);
+  /* color: white; */
 }
 
 img {
@@ -18,18 +18,16 @@ img {
 }
 
 .outer-board {
-  height: 95%;
   aspect-ratio: 1;
   background: linear-gradient(135deg, #5e2b15 0%, #291208 100%);
-  border-radius: 23px;
-  @apply flex items-center justify-center;
+  border-radius: 12px;
+  @apply h-full p-6 flex items-center justify-center my-6;
 }
 
 .inner-board {
-  height: 95%;
+  height: 100%;
   aspect-ratio: 1;
   background-color: white;
-  border-radius: 23px;
 }
 
 .overlay::after {
@@ -50,4 +48,35 @@ img {
   /* background: radial-gradient(teal 35%, #000); */
   background-color: rgba(50, 207, 126, 0.7);
   /* background: radial-gradient(cyan 30%, teal); */
+}
+
+.kill::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  /* background: radial-gradient(50% 50% at 50% 50%, #5ee1c2 0%, #427a82 53.12%); */
+  /* background: radial-gradient(teal 35%, #000); */
+  background-color: rgba(233, 59, 59, 0.7);
+  /* background: radial-gradient(cyan 30%, teal); */
+}
+
+.btn {
+  background: url("/src/assets/white-square.png");
+
+  @apply rounded-md text-xl font-black w-1/4 py-5 border-4 border-[#5e2b15];
+}
+
+.scale {
+  animation: animate 0.25s linear;
+}
+
+@keyframes animate {
+  0% {
+    scale: 0;
+    border-radius: 100%;
+  }
+  100% {
+    scale: 100%;
+    border-radius: 0;
+  }
 }
