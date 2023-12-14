@@ -1,56 +1,45 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import Menu from "./components/Menu";
 import Board from "./components/Board";
 import KillBoard from "./components/KillBoard";
 import { useAppDispatch, useAppSelector } from "./store/store";
-import { resetGame } from "./store/square";
+// import { resetGame } from "./store/square";
 
-const App: React.FC = () => {
+const App = () => {
   const dispatch = useAppDispatch();
   const { blackKill, whiteKill } = useAppSelector((state) => state.square);
-  const [toggle, setToggle] = useState(false);
+  // const [toggle, setToggle] = useState(false);
+  const [killToggle, setKillToggle] = useState(false);
 
   return (
-    <main className="h-screen max-h-screen py-6 px-10 flex items-center justify-between">
-      {/* Aside Menu */}
-      <Menu setToggle={setToggle} />
-      <div className="w-full" />
-      {/* Main Board */}
-      <section className=" outer-board">
-        <div className="relative inner-board">
-          {toggle && (
-            <div
-              className={`absolute w-full flex flex-col items-center justify-center z-20 inset-0 bg-black/80 ${
-                toggle ? "scale" : ""
-              } `}
-            >
-              <h1 className="text-center font-black text-3xl text-white mb-10">
-                Are You Sure you want to quit the game?
-              </h1>
-              <div className="flex w-full items-center justify-center space-x-10">
-                <button className="btn" onClick={() => setToggle(false)}>
-                  No
-                </button>
-
-                <button
-                  className="btn"
-                  onClick={() => {
-                    dispatch(resetGame());
-                    setToggle(false);
-                  }}
-                >
-                  Yes
-                </button>
-              </div>
-            </div>
+    <main className="h-screen lg:w-screen max-h-screen max-w-screen p-3 py-6 lg:py-6 lg:px-10 flex flex-col-reverse lg:flex-row items-center justify-center gap-y-4 lg:space-y-0 lg:space-x-10">
+      <Menu killToggle={killToggle} setKillToggle={setKillToggle} />
+      <section className="brown-gradient relative w-full sm:w-[75%] lg:w-fit h-fit lg:h-full rounded-xl p-4 lg:p-10 flex items-center justify-start space-x-10">
+        <div className="relative lg:h-full w-full lg:w-fit aspect-square brown-gradient">
+          <section
+            className="flex sm:hidden items-center justify-center space-x-4 mb-4"
+            style={{ aspectRatio: 2 / 1 }}
+          >
+            <KillBoard killArray={blackKill} color="black" />
+            <KillBoard killArray={whiteKill} color="white" />
+          </section>
+          {killToggle ? (
+            <section className="h-full flex flex-col w-full items-center justify-center space-y-10">
+              <KillBoard killArray={blackKill} color="black" />
+              <KillBoard killArray={whiteKill} color="white" />
+            </section>
+          ) : (
+            <Board />
           )}
-          <Board />
         </div>
-      </section>
-      {/* Kill Board */}
-      <section className="w-full ml-32 flex space-y-2 h-full m-5 flex-col items-center justify-around">
-        <KillBoard killArray={blackKill} color="black" />
-        <KillBoard killArray={whiteKill} color="white" />
+
+        <section
+          className="h-full hidden xl:flex flex-col items-center justify-center space-y-10"
+          style={{ aspectRatio: 1 / 2 }}
+        >
+          <KillBoard killArray={blackKill} color="black" />
+          <KillBoard killArray={whiteKill} color="white" />
+        </section>
       </section>
     </main>
   );

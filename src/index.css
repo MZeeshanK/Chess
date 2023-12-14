@@ -13,21 +13,28 @@ body {
   /* color: white; */
 }
 
-img {
+* {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
   user-select: none;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 
 .outer-board {
-  aspect-ratio: 1;
-  background: linear-gradient(135deg, #5e2b15 0%, #291208 100%);
   border-radius: 12px;
-  @apply h-full p-6 flex items-center justify-center my-6;
+  background: linear-gradient(135deg, #5e2b15 0%, #291208 100%);
+}
+
+.brown-gradient {
+  background: linear-gradient(135deg, #5e2b15 0%, #291208 100%);
 }
 
 .inner-board {
   height: 100%;
-  aspect-ratio: 1;
-  background-color: white;
+  background: linear-gradient(135deg, #5e2b15 0%, #291208 100%);
 }
 
 .overlay::after {

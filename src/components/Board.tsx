@@ -9,7 +9,7 @@ const Board = () => {
       {squares.map((row, rowIndex) => (
         <div
           key={rowIndex}
-          className="w-full h-full bg-black flex items-center justify-center"
+          className="w-full h-full flex items-center justify-center"
         >
           {row.map((square, colIndex) => (
             <Piece key={colIndex} square={square} />
