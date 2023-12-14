@@ -15,9 +15,6 @@ const Piece = ({ square }: Props) => {
 
   const { row, col, value, color, current, valid, kill, empty } = square;
 
-  const blackCheckCondition = blackCheck && color === "b" && value === "king";
-  const whiteCheckCondition = whiteCheck && color === "w" && value === "king";
-
   return (
     <div
       onClick={() => {
@@ -48,29 +45,16 @@ const Piece = ({ square }: Props) => {
       }
       `}
     >
-      {/* Normal Square */}
-      {!empty && !blackCheckCondition && !whiteCheckCondition ? (
+      {!empty && (
         <img
-          className="absolute z-20"
+          className={`absolute z-50 w-full h-full ${
+            blackCheck && value === "king" && color === "b" ? "check" : ""
+          }
+          ${whiteCheck && value === "king" && color === "w" ? "check" : ""}
+          `}
           src={`/src/assets/${value}-${color}.png`}
           alt="loading"
         />
-      ) : blackCheckCondition && !empty ? (
-        // Black check King
-        <img
-          className="absolute z-20"
-          src={`/src/assets/black-king-check.png`}
-          alt="loading"
-        />
-      ) : whiteCheckCondition && !empty ? (
-        // white check king
-        <img
-          className="absolute z-20"
-          src={`/src/assets/white-king-check.png`}
-          alt="loading"
-        />
-      ) : (
-        <></>
       )}
     </div>
   );

@@ -4,11 +4,11 @@ import { Square, State, LastMoveElement } from "../types";
 import {
   bishopMoves,
   rookMoves,
-  validRules,
   kingMoves,
   knightMoves,
   pawnMoves,
-  checkSquare,
+  pawnCheck,
+  kingCheck,
 } from "./rules";
 import { Stack } from "./Stack";
 
@@ -104,7 +104,7 @@ export const squareSlice = createSlice({
           break;
 
         case "rook":
-          rookMoves(state, element, validRules);
+          rookMoves(state, element);
           break;
 
         case "knight":
@@ -112,12 +112,12 @@ export const squareSlice = createSlice({
           break;
 
         case "bishop":
-          bishopMoves(state, element, validRules);
+          bishopMoves(state, element);
           break;
 
         case "queen":
-          rookMoves(state, element, validRules);
-          bishopMoves(state, element, validRules);
+          rookMoves(state, element);
+          bishopMoves(state, element);
           break;
 
         case "king":
@@ -150,8 +150,6 @@ export const squareSlice = createSlice({
         if (state.turn === "w") state.whiteKill.push(newPos.value);
         else state.blackKill.push(newPos.value);
       }
-
-      console.log(state.blackCheck);
 
       const stackOld = { ...element, current: false };
       const stackNew = { ...newPos, valid: false, kill: false };
@@ -210,14 +208,16 @@ export const squareSlice = createSlice({
         });
       });
 
-      // squareSlice.caseReducers.kingCheck(state);
-
       stack.push({
         oldPos: stackOld,
         newPos: stackNew,
         blackCheck: state.blackCheck,
         whiteCheck: state.whiteCheck,
       });
+
+      state.lastMove = stack.peek();
+
+      squareSlice.caseReducers.kingCheck(state);
 
       if (state.turn === "w") state.turn = "b";
       else state.turn = "w";
@@ -248,9 +248,9 @@ export const squareSlice = createSlice({
 
     // Undo the previous move until the board is reset
     undoMove: (state) => {
-      if (!stack.peek()) return;
+      if (!state.lastMove) return;
 
-      const { newPos, oldPos } = stack.pop();
+      const { newPos, oldPos, blackCheck, whiteCheck } = state.lastMove;
 
       state.board.forEach((row) => {
         row.forEach((square) => {
@@ -293,7 +293,9 @@ export const squareSlice = createSlice({
       state.board[newPos.row][newPos.col] = newPos;
       state.board[oldPos.row][oldPos.col] = oldPos;
 
-      state.lastMove = stack.peek();
+      state.blackCheck = blackCheck;
+      state.whiteCheck = whiteCheck;
+
       if (state.turn === "w") {
         state.turn = "b";
         if (!newPos.empty) state.blackKill.pop();
@@ -301,29 +303,40 @@ export const squareSlice = createSlice({
         state.turn = "w";
         if (!newPos.empty) state.whiteKill.pop();
       }
+
+      stack.pop();
+      state.lastMove = stack.peek();
     },
-    // kingCheck: (state) => {
-    //   const { row: bRow, col: bCol } = state.blackKing;
-    //   const { row: wRow, col: wCol } = state.blackKing;
 
-    //   const blackKing = state.board[bRow][bCol];
-    //   const whiteKing = state.board[wRow][wCol];
+    // Check for the king
+    kingCheck: (state) => {
+      const blackKing = state.board[state.blackKing.row][state.blackKing.col];
+      const whiteKing = state.board[state.whiteKing.row][state.whiteKing.col];
 
-    //   if (
-    //     bishopMoves(state, blackKing, undefined, checkSquare, "queen") ||
-    //     bishopMoves(state, blackKing, undefined, checkSquare, "bishop") ||
-    //     bishopMoves(state, whiteKing, undefined, checkSquare, "queen") ||
-    //     bishopMoves(state, whiteKing, undefined, checkSquare, "bishop") ||
-    //     rookMoves(state, blackKing, undefined, checkSquare, "queen") ||
-    //     rookMoves(state, blackKing, undefined, checkSquare, "rook") ||
-    //     rookMoves(state, whiteKing, undefined, checkSquare, "queen") ||
-    //     rookMoves(state, whiteKing, undefined, checkSquare, "rook")
-    //   ) {
-    //     return;
-    //   }
+      if (
+        bishopMoves(state, blackKing, "bishop") ||
+        bishopMoves(state, blackKing, "queen") ||
+        rookMoves(state, blackKing, "rook") ||
+        rookMoves(state, blackKing, "queen") ||
+        pawnCheck(state, blackKing) ||
+        knightMoves(state, blackKing) ||
+        kingCheck(state, blackKing)
+      )
+        state.blackCheck = true;
+      else state.blackCheck = false;
 
-    //   knightMoves(state, blackKing);
-    // },
+      if (
+        bishopMoves(state, whiteKing, "bishop") ||
+        bishopMoves(state, whiteKing, "queen") ||
+        rookMoves(state, whiteKing, "rook") ||
+        rookMoves(state, whiteKing, "queen") ||
+        pawnCheck(state, whiteKing) ||
+        knightMoves(state, whiteKing) ||
+        kingCheck(state, whiteKing)
+      )
+        state.whiteCheck = true;
+      else state.whiteCheck = false;
+    },
   },
 });
 

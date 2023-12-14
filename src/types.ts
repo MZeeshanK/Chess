@@ -61,20 +61,15 @@ export type MoveCallBack = (
 
 export type CheckCallBack = (
   square: Square,
-  state: State,
-  checker: Piece,
-  target: Square
-) => undefined | boolean;
+  target: Square,
+  checker: Piece
+) => void | boolean;
 
 export type ComplexPieces = (
   state: State,
   target: Square,
-  cb1?: MoveCallBack,
-  cb2?: CheckCallBack,
   checker?: Piece
-) => undefined | boolean;
-
-export type SimplePieces = (state: State, target: Square) => void;
+) => void | boolean;
 
 export type Node<G> = {
   value: G;

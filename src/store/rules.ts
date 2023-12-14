@@ -1,10 +1,4 @@
-import {
-  ComplexPieces,
-  SimplePieces,
-  MoveCallBack,
-  Square,
-  CheckCallBack,
-} from "../types";
+import { CheckCallBack, ComplexPieces, MoveCallBack, Square } from "../types";
 
 export const validRules: MoveCallBack = (square, state, boundary) => {
   if (!square.empty) {
@@ -13,34 +7,15 @@ export const validRules: MoveCallBack = (square, state, boundary) => {
   } else square.valid = true;
 };
 
-export const checkSquare: CheckCallBack = (
-  square,
-  state,
-  checker,
-  target
-): undefined | boolean => {
+export const validChecks: CheckCallBack = (square, target, checker) => {
   if (!square.empty) {
-    // with piece in the square
-
-    if (square.value === checker && square.color !== target.color) {
-      state.blackCheck = true;
-      return true;
-    } else {
-      state.blackCheck = false;
-      return false;
-    }
-  } else {
-    state.blackCheck = false;
+    if (square.color !== target.color && square.value === checker) return true;
+    else return false;
   }
 };
 
-export const bishopMoves: ComplexPieces = (
-  state,
-  target,
-  cb1,
-  cb2,
-  checker
-) => {
+// Logic for the movement of bishop
+export const bishopMoves: ComplexPieces = (state, target, checker) => {
   const { row, col } = target;
   let i = 1;
 
@@ -48,15 +23,13 @@ export const bishopMoves: ComplexPieces = (
   while (row - i >= 0 && col + i <= 7) {
     const square = state.board[row - i][col + i] as Square;
 
-    if (cb1) if (cb1(square, state, true)) break;
-
-    if (checker && cb2) {
-      const result = cb2(square, state, checker, target);
-
-      if (result) return true;
-      if (result === false) break;
+    if (!checker) {
+      if (validRules(square, state, true)) break;
+    } else {
+      const valid = validChecks(square, target, checker);
+      if (valid) return true;
+      else if (valid === false) break;
     }
-
     i++;
   }
 
@@ -65,13 +38,12 @@ export const bishopMoves: ComplexPieces = (
   while (row + i <= 7 && col + i <= 7) {
     const square = state.board[row + i][col + i] as Square;
 
-    if (cb1) if (cb1(square, state, true)) break;
-
-    if (checker && cb2) {
-      const result = cb2(square, state, checker, target);
-
-      if (result) return true;
-      if (result === false) break;
+    if (!checker) {
+      if (validRules(square, state, true)) break;
+    } else {
+      const valid = validChecks(square, target, checker);
+      if (valid) return true;
+      else if (valid === false) break;
     }
 
     i++;
@@ -82,13 +54,12 @@ export const bishopMoves: ComplexPieces = (
   while (row + i <= 7 && col - i >= 0) {
     const square = state.board[row + i][col - i] as Square;
 
-    if (cb1) if (cb1(square, state, true)) break;
-
-    if (checker && cb2) {
-      const result = cb2(square, state, checker, target);
-
-      if (result) return true;
-      if (result === false) break;
+    if (!checker) {
+      if (validRules(square, state, true)) break;
+    } else {
+      const valid = validChecks(square, target, checker);
+      if (valid) return true;
+      else if (valid === false) break;
     }
 
     i++;
@@ -99,20 +70,21 @@ export const bishopMoves: ComplexPieces = (
   while (row - i >= 0 && col - i >= 0) {
     const square = state.board[row - i][col - i] as Square;
 
-    if (cb1) if (cb1(square, state, true)) break;
-
-    if (checker && cb2) {
-      const result = cb2(square, state, checker, target);
-
-      if (result) return true;
-      if (result === false) break;
+    if (!checker) {
+      if (validRules(square, state, true)) break;
+    } else {
+      const valid = validChecks(square, target, checker);
+      if (valid) return true;
+      else if (valid === false) break;
     }
 
     i++;
   }
+  return false;
 };
 
-export const rookMoves: ComplexPieces = (state, target, cb1, cb2, checker) => {
+// Logic for the movement of rook
+export const rookMoves: ComplexPieces = (state, target, checker) => {
   const { row, col } = target;
   let i: number = 1;
 
@@ -120,13 +92,12 @@ export const rookMoves: ComplexPieces = (state, target, cb1, cb2, checker) => {
   while (row - i >= 0) {
     const square = state.board[row - i][col];
 
-    if (cb1) if (cb1(square, state, true)) break;
-
-    if (checker && cb2) {
-      const result = cb2(square, state, checker, target);
-
-      if (result) return true;
-      if (result === false) break;
+    if (!checker) {
+      if (validRules(square, state, true)) break;
+    } else {
+      const valid = validChecks(square, target, checker);
+      if (valid) return true;
+      else if (valid === false) break;
     }
 
     i++;
@@ -137,13 +108,12 @@ export const rookMoves: ComplexPieces = (state, target, cb1, cb2, checker) => {
   while (row + i <= 7) {
     const square = state.board[row + i][col];
 
-    if (cb1) if (cb1(square, state, true)) break;
-
-    if (checker && cb2) {
-      const result = cb2(square, state, checker, target);
-
-      if (result) return true;
-      if (result === false) break;
+    if (!checker) {
+      if (validRules(square, state, true)) break;
+    } else {
+      const valid = validChecks(square, target, checker);
+      if (valid) return true;
+      else if (valid === false) break;
     }
 
     i++;
@@ -154,13 +124,12 @@ export const rookMoves: ComplexPieces = (state, target, cb1, cb2, checker) => {
   while (col + i <= 7) {
     const square = state.board[row][col + i];
 
-    if (cb1) if (cb1(square, state, true)) break;
-
-    if (checker && cb2) {
-      const result = cb2(square, state, checker, target);
-
-      if (result) return true;
-      if (result === false) break;
+    if (!checker) {
+      if (validRules(square, state, true)) break;
+    } else {
+      const valid = validChecks(square, target, checker);
+      if (valid) return true;
+      else if (valid === false) break;
     }
 
     i++;
@@ -171,20 +140,21 @@ export const rookMoves: ComplexPieces = (state, target, cb1, cb2, checker) => {
   while (col - i >= 0) {
     const square = state.board[row][col - i];
 
-    if (cb1) if (cb1(square, state, true)) break;
-
-    if (checker && cb2) {
-      const result = cb2(square, state, checker, target);
-
-      if (result) return true;
-      if (result === false) break;
+    if (!checker) {
+      if (validRules(square, state, true)) break;
+    } else {
+      const valid = validChecks(square, target, checker);
+      if (valid) return true;
+      else if (valid === false) break;
     }
 
     i++;
   }
+  return false;
 };
 
-export const kingMoves: SimplePieces = (state, target) => {
+// Logic for the movement of king
+export const kingMoves: ComplexPieces = (state, target) => {
   const { row, col } = target;
 
   for (let i = row - 1; i <= row + 1; i++) {
@@ -231,7 +201,8 @@ export const kingMoves: SimplePieces = (state, target) => {
   if (state.turn === "b" && row === 0) castle(0);
 };
 
-export const knightMoves: SimplePieces = (state, target) => {
+// Logic for the movement of knight
+export const knightMoves: ComplexPieces = (state, target) => {
   const { row, col } = target;
   const firstRow = [row + 1, row - 1];
   const secondRow = [row + 2, row - 2];
@@ -241,50 +212,43 @@ export const knightMoves: SimplePieces = (state, target) => {
 
   const validKnights = (
     firstRow: number[],
-    secondCol: number[],
-    cb1?: MoveCallBack
+    secondCol: number[]
   ): void | boolean => {
-    const firstLoop = firstRow.map((knightRow) => {
+    const first = firstRow.map((knightRow) => {
       if (knightRow > 7) return;
       if (knightRow < 0) return;
 
-      const secondLoop = secondCol.map((knightCol) => {
+      const second = secondCol.map((knightCol) => {
         if (knightCol > 7) return;
         if (knightCol < 0) return;
 
         const square = state.board[knightRow][knightCol];
 
-        if (cb1) cb1(square, state);
-        else {
-          if (square.color !== target.color && square.value === "knight") {
+        if (target.value === "king") {
+          if (square.value === "knight" && square.color !== target.color)
             return true;
-          }
+        } else {
+          validRules(square, state);
         }
       });
 
-      if (secondLoop[0] || secondLoop[1]) {
-        return true;
-      }
+      if (second[0] || second[1]) return true;
     });
-    if (firstLoop[0] || firstLoop[1]) {
-      return true;
-    }
+
+    if (first[0] || first[0]) return true;
   };
 
   if (target.value === "king") {
-    if (
-      validKnights(firstRow, secondCol) ||
-      validKnights(secondRow, firstCol)
-    ) {
-      state.blackCheck = true;
-    } else state.blackCheck = false;
-  } else {
-    validKnights(firstRow, secondCol, validRules) ||
-      validKnights(secondRow, firstCol, validRules);
+    if (validKnights(firstRow, secondCol) || validKnights(secondRow, firstCol))
+      return true;
   }
+
+  validKnights(firstRow, secondCol);
+  validKnights(secondRow, firstCol);
 };
 
-export const pawnMoves: SimplePieces = (state, target) => {
+// Logic for the movement of pawn
+export const pawnMoves: ComplexPieces = (state, target) => {
   const { row, col } = target;
 
   let firstSquare: Square;
@@ -326,4 +290,69 @@ export const pawnMoves: SimplePieces = (state, target) => {
   if (!secondSquare) return;
   if (!secondSquare?.empty) return;
   secondSquare.valid = true;
+};
+
+export const kingCheck: ComplexPieces = (state, target) => {
+  const { row, col } = target;
+
+  const arr1 = [row, row + 1, row - 1];
+  const arr2 = [col, col + 1, col - 1];
+
+  const first = arr1.map((rows) => {
+    if (rows < 0 || rows > 7) return;
+
+    const second = arr2.map((cols) => {
+      if (rows === cols) return;
+      if (cols < 0 || cols > 7) return;
+
+      const square = state.board[rows][cols];
+
+      if (
+        !square.empty &&
+        square.value === "king" &&
+        square.color !== target.color
+      ) {
+        return true;
+      }
+    });
+
+    for (let i = 0; i < second.length; i++) {
+      if (second[i]) return true;
+    }
+  });
+
+  for (let i = 0; i < first.length; i++) {
+    if (first[i]) return true;
+  }
+};
+
+export const pawnCheck: ComplexPieces = (state, target) => {
+  const { row, col } = target;
+
+  let firstSquare: Square;
+  let secondSquare: Square;
+
+  if (target.color === "w") {
+    if (row === 0) return;
+
+    firstSquare = state.board[row - 1][col + 1];
+    secondSquare = state.board[row - 1][col - 1];
+
+    if (
+      (firstSquare.color === "b" && firstSquare.value === "pawn") ||
+      (secondSquare.color === "b" && secondSquare.value === "pawn")
+    )
+      return true;
+  } else {
+    if (row === 7) return;
+
+    firstSquare = state.board[row + 1][col + 1];
+    secondSquare = state.board[row + 1][col - 1];
+
+    if (
+      (firstSquare.color === "w" && firstSquare.value === "pawn") ||
+      (secondSquare.color === "w" && secondSquare.value === "pawn")
+    )
+      return true;
+  }
 };

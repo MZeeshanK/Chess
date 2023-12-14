@@ -2,12 +2,13 @@ import { undoMove } from "../store/square";
 import { useAppDispatch, useAppSelector } from "../store/store";
 
 type Props = {
-  // setToggle: React.Dispatch<React.SetStateAction<boolean>>;
+  toggle: boolean;
+  setToggle: React.Dispatch<React.SetStateAction<boolean>>;
   killToggle: boolean;
   setKillToggle: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-const Menu = ({ killToggle, setKillToggle }: Props) => {
+const Menu = ({ toggle, setToggle, killToggle, setKillToggle }: Props) => {
   const dispatch = useAppDispatch();
   const { turn } = useAppSelector((state) => state.square);
 
@@ -52,7 +53,7 @@ const Menu = ({ killToggle, setKillToggle }: Props) => {
             alt=""
           />
         </button>
-        <button>
+        <button onClick={() => setToggle(!toggle)}>
           <img
             src="/src/assets/close.png"
             className="w-5 md:w-8 lg:w-12"
