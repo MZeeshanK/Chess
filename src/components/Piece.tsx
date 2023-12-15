@@ -25,8 +25,8 @@ const Piece = ({ square }: Props) => {
       style={{
         background:
           (row % 2 === 0 && col % 2 === 0) || (row % 2 !== 0 && col % 2 !== 0)
-            ? "url(/src/assets/white-square.png)"
-            : "url(/src/assets/black-square.png)",
+            ? "url(assets/white-square.png)"
+            : "url(assets/black-square.png)",
       }}
       className={`h-full aspect-square flex items-center justify-center relative ${
         current ? "overlay" : ""
@@ -52,7 +52,7 @@ const Piece = ({ square }: Props) => {
           }
           ${whiteCheck && value === "king" && color === "w" ? "check" : ""}
           `}
-          src={`/src/assets/${value}-${color}.png`}
+          src={`assets/${value}-${color}.png`}
           alt="loading"
         />
       )}

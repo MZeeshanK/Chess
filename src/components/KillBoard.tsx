@@ -10,14 +10,14 @@ const KillBoard = ({ killArray, color }: Props) => {
     <div
       className="grid h-full w-full rounded-xl grid-cols-4 grid-rows-4"
       style={{
-        backgroundImage: `url("/src/assets/${color}-board.png")`,
+        backgroundImage: `url("/assets/${color}-board.png")`,
         backgroundSize: "cover",
       }}
     >
       {killArray.map((square, index) => (
         <div className="h-full" key={index}>
           <img
-            src={`/src/assets/${square}-${color === "white" ? "b" : "w"}.png`}
+            src={`assets/${square}-${color === "white" ? "b" : "w"}.png`}
             alt=""
           />
         </div>

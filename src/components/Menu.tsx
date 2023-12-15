@@ -23,7 +23,7 @@ const Menu = ({ toggle, setToggle, killToggle, setKillToggle }: Props) => {
       <div className="flex lg:w-full lg:flex-col items-center">
         <div className="flex flex-col items-center justify-center lg:space-x-0">
           <img
-            src={`/src/assets/pawn-${turn}.png`}
+            src={`/assets/pawn-${turn}.png`}
             className="w-10 lg:w-20 aspect-square mb-1 lg:mb-2 "
             alt=""
           />
@@ -47,18 +47,10 @@ const Menu = ({ toggle, setToggle, killToggle, setKillToggle }: Props) => {
           <p>H</p>
         </button>
         <button onClick={() => dispatch(undoMove())}>
-          <img
-            src="/src/assets/undo.png"
-            className="w-5 md:w-8 lg:w-12"
-            alt=""
-          />
+          <img src="/assets/undo.png" className="w-5 md:w-8 lg:w-12" alt="" />
         </button>
         <button onClick={() => setToggle(!toggle)}>
-          <img
-            src="/src/assets/close.png"
-            className="w-5 md:w-8 lg:w-12"
-            alt=""
-          />
+          <img src="/assets/close.png" className="w-5 md:w-8 lg:w-12" alt="" />
         </button>
       </div>
     </aside>

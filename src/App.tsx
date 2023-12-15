@@ -32,7 +32,7 @@ const App = () => {
             className="w-1/3 rounded-xl border-4 py-4 border-gray-400"
             onClick={() => setToggle(false)}
             style={{
-              background: 'url("/src/assets/black-board.png")',
+              background: 'url("assets/black-board.png")',
               backgroundSize: "cover",
             }}
           >
@@ -41,7 +41,7 @@ const App = () => {
           <button
             className="w-1/3 rounded-xl border-4 py-4 border-gray-400 text-black"
             style={{
-              background: 'url("/src/assets/white-board.png")',
+              background: 'url("assets/white-board.png")',
               backgroundSize: "cover",
             }}
             onClick={quitGame}
