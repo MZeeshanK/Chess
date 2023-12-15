@@ -2,35 +2,12 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Chess Game || MZeeshanK</title>
-    <link rel="icon" type="image/x-icon" href="img/chess-icon.jpg" />
-    <link rel="stylesheet" href="style.css" />
+    <title>Chess || MZeeshanK</title>
   </head>
   <body>
-    <div class="board">
-      <div class="white-kill"></div>
-      <div class="inner-board"></div>
-      <div class="black-kill"></div>
-      <div class="game-over">
-        <div class="inner-game-over">
-          <div class="winner">
-            <h2 id="heading">Game Over</h3>
-            <h5 id="winner-heading"></h6>
-          </div>
-          <button id="play-again">Play Again</button>
-        </div>
-      </div>
-    </div>
-
-    <footer id="footer">
-      <p>MZeeshanK Production &copy; all Rights Reserved.</p>
-    </footer:footer>
-
-    <script src="ui.js"></script>
-    <script src="variables.js"></script>
-    <script src="rules.js"></script>
-    <script src="game.js"></script>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

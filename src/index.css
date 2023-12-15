@@ -1,0 +1,96 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: linear-gradient(105deg, #111, #333);
+  /* color: white; */
+}
+
+* {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+.outer-board {
+  border-radius: 12px;
+  background: linear-gradient(135deg, #5e2b15 0%, #291208 100%);
+}
+
+.brown-gradient {
+  background: linear-gradient(135deg, #5e2b15 0%, #291208 100%);
+}
+
+.inner-board {
+  height: 100%;
+  background: linear-gradient(135deg, #5e2b15 0%, #291208 100%);
+}
+
+.overlay::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  /* background: radial-gradient(50% 50% at 50% 50%, #5ee1c2 0%, #427a82 53.12%); */
+  /* background: radial-gradient(teal 35%, #000); */
+  /* background: radial-gradient(cyan 30%, teal); */
+  background: rgba(38, 220, 214, 0.7);
+}
+
+.valid::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  /* background: radial-gradient(50% 50% at 50% 50%, #5ee1c2 0%, #427a82 53.12%); */
+  /* background: radial-gradient(teal 35%, #000); */
+  background-color: rgba(50, 207, 126, 0.7);
+  /* background: radial-gradient(cyan 30%, teal); */
+}
+
+.kill::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  /* background: radial-gradient(50% 50% at 50% 50%, #5ee1c2 0%, #427a82 53.12%); */
+  /* background: radial-gradient(teal 35%, #000); */
+  background-color: rgba(233, 59, 59, 0.7);
+  /* background: radial-gradient(cyan 30%, teal); */
+}
+
+.btn {
+  background: url("/src/assets/white-square.png");
+
+  @apply rounded-md text-xl font-black w-1/4 py-5 border-4 border-[#5e2b15];
+}
+
+.scale {
+  animation: animate 0.25s linear;
+}
+
+.check {
+  filter: drop-shadow(0 0 0.2rem #f00);
+  box-shadow: inset 0 0 1rem 0.1rem #f00;
+}
+
+@keyframes animate {
+  0% {
+    scale: 0;
+    border-radius: 100%;
+    display: none;
+  }
+  100% {
+    scale: 100%;
+    border-radius: 0;
+    display: flex;
+  }
+}
